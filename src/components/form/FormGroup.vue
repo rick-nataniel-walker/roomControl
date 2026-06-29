@@ -1,17 +1,33 @@
 <template>
-  <div class="form-group" :class="{ 'form-row': row }">
-    <label v-if="label" :for="$attrs.id" class="form-label">{{ label }}</label>
+  <div
+    class="form-group"
+    :class="{ 'form-row': row, 'has-error': showRequiredError }"
+  >
+    <label v-if="label" :for="$attrs.id" class="form-label">
+      {{ label }}
+      <span v-if="isRequired" class="required-marker" aria-hidden="true"
+        >*</span
+      >
+      <span v-if="isRequired" class="sr-only">(obrigatório)</span>
+    </label>
     <component
       :is="inputType"
       :value="modelValue"
       v-bind="$attrs"
       :type="type"
       class="form-control"
+      :aria-invalid="showRequiredError ? 'true' : undefined"
+      :aria-describedby="describedBy"
       @input="handleInput"
       @change="handleChange"
+      @blur="handleBlur"
+      @invalid="handleInvalid"
     >
       <slot></slot>
     </component>
+    <p v-if="showRequiredError" :id="errorId" class="form-error" role="alert">
+      {{ requiredMessage }}
+    </p>
     <slot name="misc"></slot>
   </div>
 </template>
@@ -33,9 +49,51 @@ export default {
       type: String,
       default: "text",
     },
+    requiredMessage: {
+      type: String,
+      default: "Este campo é obrigatório.",
+    },
     row: Boolean,
   },
   emits: ["update:modelValue"],
+  data() {
+    return {
+      touched: false,
+    };
+  },
+  computed: {
+    isRequired() {
+      return (
+        this.$attrs.required !== undefined && this.$attrs.required !== false
+      );
+    },
+    isEmpty() {
+      if (Array.isArray(this.modelValue)) {
+        return this.modelValue.length === 0;
+      }
+
+      return (
+        this.modelValue === null ||
+        this.modelValue === undefined ||
+        (typeof this.modelValue === "string" && this.modelValue.trim() === "")
+      );
+    },
+    showRequiredError() {
+      return this.isRequired && this.touched && this.isEmpty;
+    },
+    errorId() {
+      return this.$attrs.id ? `${this.$attrs.id}-error` : undefined;
+    },
+    describedBy() {
+      const existingDescription = this.$attrs["aria-describedby"];
+
+      return (
+        [existingDescription, this.showRequiredError ? this.errorId : null]
+          .filter(Boolean)
+          .join(" ") || undefined
+      );
+    },
+  },
   methods: {
     handleInput(event) {
       if (this.inputType === "file" || this.type === "file") {
@@ -48,6 +106,13 @@ export default {
       if (this.inputType === "select") {
         this.$emit("update:modelValue", event.target.value);
       }
+    },
+    handleBlur() {
+      this.touched = true;
+    },
+    handleInvalid(event) {
+      event.preventDefault();
+      this.touched = true;
     },
   },
 };
@@ -66,8 +131,20 @@ export default {
   @apply mb-2 block text-sm font-semibold text-primary;
 }
 
+.required-marker {
+  @apply ml-0.5 text-red-600;
+}
+
 .form-control {
   @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-primary shadow-sm outline-none transition placeholder:text-slate-400 focus:border-secondary focus:ring-2 focus:ring-secondary/20;
+}
+
+.has-error .form-control {
+  @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
+}
+
+.form-error {
+  @apply mt-1.5 text-sm font-medium text-red-600;
 }
 
 textarea.form-control {

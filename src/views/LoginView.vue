@@ -25,7 +25,7 @@
               v-model="identifier"
               type="text"
               autocomplete="username"
-              placeholder="Email ou nome de utilizador"
+              placeholder="Intriduza o username"
               aria-label="Email ou nome de utilizador"
               required
             />
@@ -49,7 +49,7 @@
                     : 'Mostrar palavra-passe'
                 "
                 :aria-pressed="showPassword"
-                @click="showPassword = !showPassword"
+                @click="togglePasswordVisibility"
               >
                 <svg
                   v-if="!showPassword"
@@ -90,19 +90,44 @@
   </main>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script>
 import FormGroup from "@/components/form/FormGroup.vue";
 import ActionBtn from "@/components/shared/ActionBtn.vue";
 import navyLogo from "@/assets/navy-logo.png";
+import { mapActions, mapState } from "vuex";
+import { LOGIN } from "@/store/constants";
 
-const identifier = ref("");
-const password = ref("");
-const rememberMe = ref(false);
-const showPassword = ref(false);
-
-const submitLogin = () => {
-  // Authentication will be connected when the API is available.
+export default {
+  name: "LoginView",
+  components: {
+    ActionBtn,
+    FormGroup,
+  },
+  data() {
+    return {
+      identifier: "",
+      password: "",
+      rememberMe: false,
+      showPassword: false,
+      navyLogo,
+    };
+  },
+  computed: {
+    ...mapState(["authenticationData"]),
+  },
+  methods: {
+    ...mapActions([LOGIN]),
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
+    submitLogin() {
+      let formdata = {
+        username: this.identifier,
+        password: this.password,
+      };
+      this.LOGIN(formdata);
+    },
+  },
 };
 </script>
 
