@@ -1,5 +1,8 @@
 <template>
-  <button class="btn-primary"><i :class="icon"></i> {{ text }}</button>
+  <button class="btn-primary" :type="type" :disabled="disabled || loading">
+    <i v-if="icon" :class="icon" aria-hidden="true"></i>
+    <span>{{ loading ? loadingText : text }}</span>
+  </button>
 </template>
 
 <script>
@@ -12,52 +15,37 @@ export default {
     },
     icon: {
       type: String,
-      required: true,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "button",
+    },
+    disabled: Boolean,
+    loading: Boolean,
+    loadingText: {
+      type: String,
+      default: "Aguarde...",
     },
   },
 };
 </script>
 
 <style scoped>
-.action-btn {
-  padding: 8px 15px;
-  border-radius: 8px;
-  border: none;
-  background: var(--light);
-  color: var(--primary);
-  font-family: inherit;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.action-btn:hover {
-  background: var(--secondary);
-  color: white;
-}
-
 .btn-primary {
-  background: var(--primary);
-  color: white;
-  padding: 12px 25px;
-  border-radius: 8px;
-  border: none;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border-0 bg-secondary px-6 py-3 font-semibold text-white transition duration-200;
 }
 
-.btn-primary:hover {
-  background: var(--secondary);
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 161, 78, 0.3);
+.btn-primary:hover:not(:disabled) {
+  @apply -translate-y-0.5 bg-primary shadow-lg;
+  box-shadow: 0 8px 20px rgba(13, 27, 61, 0.22);
+}
+
+.btn-primary:focus-visible {
+  @apply outline-none ring-2 ring-secondary ring-offset-2;
+}
+
+.btn-primary:disabled {
+  @apply cursor-not-allowed opacity-60;
 }
 </style>

@@ -1,24 +1,25 @@
 <template>
   <div class="form-group" :class="{ 'form-row': row }">
-    <label v-if="label" class="form-label">{{ label }}</label>
+    <label v-if="label" :for="$attrs.id" class="form-label">{{ label }}</label>
     <component
       :is="inputType"
       :value="modelValue"
       v-bind="$attrs"
       :type="type"
+      class="form-control"
       @input="handleInput"
       @change="handleChange"
-      class="form-control"
     >
       <slot></slot>
     </component>
-    <slot name="misc"> </slot>
+    <slot name="misc"></slot>
   </div>
 </template>
 
 <script>
 export default {
   name: "FormGroup",
+  inheritAttrs: false,
   props: {
     label: String,
     modelValue: [String, Number, Boolean, Date, Array, Object],
@@ -30,7 +31,7 @@ export default {
     },
     type: {
       type: String,
-      required: false,
+      default: "text",
     },
     row: Boolean,
   },
@@ -51,31 +52,31 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .form-group {
-  @apply mb-6; /* margin-bottom: 25px → approx. 6 */
+  @apply mb-4;
 }
 
 .form-group.form-row {
-  @apply grid gap-5 grid-cols-1;
-
-  /* Media query for lg+ screens */
-}
-@media (min-width: 992px) {
-  .form-group.form-row {
-    @apply grid-cols-2;
-  }
+  @apply grid grid-cols-1 gap-5;
 }
 
 .form-label {
-  @apply block mb-2 font-semibold text-primary;
+  @apply mb-2 block text-sm font-semibold text-primary;
 }
 
 .form-control {
-  @apply w-full px-8 py-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-base focus:outline-none focus:border-secondary active:border-secondary;
+  @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-primary shadow-sm outline-none transition placeholder:text-slate-400 focus:border-secondary focus:ring-2 focus:ring-secondary/20;
 }
 
 textarea.form-control {
   @apply min-h-32 resize-y;
+}
+
+@media (min-width: 992px) {
+  .form-group.form-row {
+    @apply grid-cols-2;
+  }
 }
 </style>
