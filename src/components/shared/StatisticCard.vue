@@ -1,8 +1,8 @@
 <template>
   <div class="stat-card">
     <div class="stat-value-row">
-      <div :class="[bgColor, color, 'stat-icon']">
-        <font-awesome-icon :icon="icon" />
+      <div :class="[bgColor, 'stat-icon']">
+        <font-awesome-icon :icon="icon" :class="color" />
       </div>
       <div class="stat-number">{{ number }}</div>
     </div>
