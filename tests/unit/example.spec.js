@@ -2,8 +2,17 @@ import { mount } from "@vue/test-utils";
 import LoginView from "@/views/LoginView.vue";
 
 describe("LoginView", () => {
+  const mountLogin = () =>
+    mount(LoginView, {
+      global: {
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    });
+
   it("renders the motel login form", () => {
-    const wrapper = mount(LoginView);
+    const wrapper = mountLogin();
 
     expect(wrapper.get("h1").text()).toBe("Bem-vindo de volta!");
     expect(wrapper.get("#identifier").attributes("placeholder")).toBeTruthy();
@@ -11,7 +20,7 @@ describe("LoginView", () => {
   });
 
   it("toggles password visibility", async () => {
-    const wrapper = mount(LoginView);
+    const wrapper = mountLogin();
 
     expect(wrapper.get("#password").attributes("type")).toBe("password");
     await wrapper.get(".password-toggle").trigger("click");
