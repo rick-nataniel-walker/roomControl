@@ -1,16 +1,6 @@
-<script>
-import StatisticCard from "@/components/shared/StatisticCard.vue";
-
-export default {
-  name: "DashboardView",
-  components: {
-    StatisticCard,
-  },
-};
-</script>
-
 <template>
   <div class="dashboard bg-gray-100">
+    <MainHeader />
     <div class="flex py-4">
       <h1 class="text-4xl font-semibold">Dashboard</h1>
     </div>
@@ -46,5 +36,18 @@ export default {
     </div>
   </div>
 </template>
+
+<script>
+import StatisticCard from "@/components/shared/StatisticCard.vue";
+import MainHeader from "@/components/nav/MainHeader.vue";
+
+export default {
+  name: "DashboardView",
+  components: {
+    StatisticCard,
+    MainHeader,
+  },
+};
+</script>
 
 <style scoped></style>
