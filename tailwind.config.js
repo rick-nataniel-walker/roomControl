@@ -30,6 +30,9 @@ module.exports = {
           mediumGray: "rgba(148, 163, 184, 0.1)",
         },
       },
+      screens: {
+        tablet: "768px", // => @media (min-width: 480px) { ... }
+      },
     },
   },
   plugins: [],

@@ -25,7 +25,7 @@ export default {
 
 <style scoped>
 .stat-card {
-  @apply flex min-h-[76px] w-full flex-col items-start justify-center rounded-lg border border-slate-200/80 bg-white p-3 text-left transition duration-200;
+  @apply flex min-h-[76px] w-1/4 flex-col items-start justify-center rounded-lg border border-slate-200/80 bg-white p-3 text-left transition duration-200;
   box-shadow: 0 2px 8px rgba(13, 27, 61, 0.04);
 }
 
