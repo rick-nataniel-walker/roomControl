@@ -9,14 +9,17 @@ export default {
 
 <template>
   <div class="card styled">
-    <h2 class="text-xl">{{ title }}</h2>
+    <h2 class="text-lg font-bold">{{ title }}</h2>
     <slot></slot>
   </div>
 </template>
 
 <style scoped>
 .card {
-  @apply w-1/2 rounded border-gray-200 p-4 gap-4;
+  @apply h-96 w-full rounded-lg border-slate-200/80 p-4 gap-4 transition duration-200 shadow-card text-left tablet:w-1/2;
+}
+.card {
+  @apply border-slate-300 shadow-card-hover;
 }
 .styled {
   @apply bg-white;

@@ -40,6 +40,14 @@
               icon="fa-bed"
             />
           </div>
+          <div class="flex flex-col gap-4 tablet:flex-row">
+            <ContentCard title="Estatística dos Quartos">
+              Aqui vai o meu content
+            </ContentCard>
+            <ContentCard title="Reservas de hoje">
+              Aqui vai o meu content
+            </ContentCard>
+          </div>
         </div>
       </div>
     </div>
@@ -50,6 +58,7 @@
 import StatisticCard from "@/components/shared/StatisticCard.vue";
 import MainHeader from "@/components/nav/MainHeader.vue";
 import NavigationMenu from "@/components/nav/NavigationMenu.vue";
+import ContentCard from "@/components/shared/ContentCard.vue";
 
 export default {
   name: "DashboardView",
@@ -57,6 +66,7 @@ export default {
     StatisticCard,
     MainHeader,
     NavigationMenu,
+    ContentCard,
   },
 };
 </script>

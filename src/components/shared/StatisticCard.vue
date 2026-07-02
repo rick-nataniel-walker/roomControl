@@ -25,13 +25,11 @@ export default {
 
 <style scoped>
 .stat-card {
-  @apply flex min-h-[76px] w-1/4 flex-col items-start justify-center rounded-lg border border-slate-200/80 bg-white p-3 text-left transition duration-200;
-  box-shadow: 0 2px 8px rgba(13, 27, 61, 0.04);
+  @apply flex min-h-[76px] w-1/4 flex-col items-start justify-center rounded-lg border border-slate-200/80 bg-white p-3 text-left transition duration-200 shadow-card;
 }
 
 .stat-card:hover {
-  @apply border-slate-300;
-  box-shadow: 0 5px 14px rgba(13, 27, 61, 0.08);
+  @apply border-slate-300 shadow-card-hover;
 }
 
 .stat-value-row {

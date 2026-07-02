@@ -33,6 +33,19 @@ module.exports = {
       screens: {
         tablet: "768px", // => @media (min-width: 480px) { ... }
       },
+      boxShadow: {
+        card: "0 2px 8px rgba(13, 27, 61, 0.04)",
+        "card-hover": "0 5px 14px rgba(13, 27, 61, 0.08)",
+        dropdown: "0 12px 32px rgba(13, 27, 61, 0.12)",
+        modal: "0 24px 48px rgba(13, 27, 61, 0.18)",
+      },
+      transitionDuration: {
+        default: "200ms",
+      },
+
+      transitionTimingFunction: {
+        default: "ease",
+      },
     },
   },
   plugins: [],
