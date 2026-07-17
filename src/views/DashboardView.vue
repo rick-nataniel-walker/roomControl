@@ -42,7 +42,7 @@
           </div>
           <div class="flex flex-col gap-4 tablet:flex-row">
             <ContentCard title="Estatística dos Quartos">
-              Aqui vai o meu content
+              <DoughnutChart />
             </ContentCard>
 
             <ContentCard title="Reservas de hoje" class="gap-4">
@@ -100,10 +100,12 @@ import MainHeader from "@/components/nav/MainHeader.vue";
 import NavigationMenu from "@/components/nav/NavigationMenu.vue";
 import ContentCard from "@/components/shared/ContentCard.vue";
 import TextBadge from "@/components/shared/TextBadge.vue";
+import DoughnutChart from "@/components/charts/doughnut/DoughnutChart.vue";
 
 export default {
   name: "DashboardView",
   components: {
+    DoughnutChart,
     StatisticCard,
     MainHeader,
     NavigationMenu,

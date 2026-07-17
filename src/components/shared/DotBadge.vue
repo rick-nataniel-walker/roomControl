@@ -5,13 +5,15 @@ export default {
     badgeBgColor() {
       switch (this.type) {
         case "danger":
-          return "bg-red-50 border-red-400";
+          return "bg-red-600";
         case "warning":
-          return "bg-lightVariants-goldAccent border-orange-400";
+          return "bg-goldAccent";
         case "success":
-          return "bg-lightVariants-emerald border-green-400";
+          return "bg-emerald";
+        case "secondary":
+          return "bg-secondary";
         default:
-          return "bg-lightVariants-mediumGray border-gray-400 ";
+          return "bg-mediumGray";
       }
     },
     badgeFormat() {
@@ -26,7 +28,10 @@ export default {
     },
   },
   props: {
-    type: String,
+    type: {
+      type: String,
+      required: true,
+    },
     format: String,
     legend: {
       type: String,
@@ -38,8 +43,8 @@ export default {
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
-    <div :class="['dot', badgeFormat]"></div>
+  <div class="flex items-center gap-4">
+    <div :class="['dot', badgeFormat, badgeBgColor]"></div>
     <div>
       <span class="text-sm">{{ legend }}</span>
     </div>
@@ -51,6 +56,6 @@ export default {
 
 <style scoped>
 .dot {
-  @apply h-6 w-6;
+  @apply h-3 w-3;
 }
 </style>
