@@ -50,7 +50,7 @@ export default {
 
 @media (min-width: 768px) {
   .stat-card {
-    @apply min-h-[92px] p-4;
+    @apply min-h-[110px] p-4;
   }
 
   .stat-value-row {
@@ -58,15 +58,15 @@ export default {
   }
 
   .stat-icon {
-    @apply h-8 w-8 text-sm;
+    @apply h-12 w-12 text-xl;
   }
 
   .stat-number {
-    @apply text-base;
+    @apply text-lg;
   }
 
   .stat-label {
-    @apply mt-2.5 text-xs;
+    @apply mt-2.5 text-base;
   }
 }
 </style>

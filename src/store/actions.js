@@ -4,9 +4,10 @@ import showAlert from "@/helpers/alert";
 
 export const actions = {
   [LOGIN](context, formdata) {
-    login(formdata)
+    return login(formdata)
       .then((response) => {
         context.commit(LOGIN, response.data);
+        return response;
       })
       .catch((error) => {
         showAlert({
@@ -14,6 +15,8 @@ export const actions = {
           title: "Login falhou!!!",
           message: error.response.data.message,
         });
+
+        throw error;
       });
   },
 };

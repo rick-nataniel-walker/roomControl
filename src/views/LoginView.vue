@@ -94,7 +94,7 @@
 import FormGroup from "@/components/form/FormGroup.vue";
 import ActionBtn from "@/components/shared/ActionBtn.vue";
 import navyLogo from "@/assets/navy-logo.png";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { LOGIN } from "@/store/constants";
 
 export default {
@@ -112,20 +112,32 @@ export default {
       navyLogo,
     };
   },
-  computed: {
-    ...mapState(["authenticationData"]),
-  },
   methods: {
     ...mapActions([LOGIN]),
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    submitLogin() {
+    async submitLogin() {
       let formdata = {
         username: this.identifier,
         password: this.password,
       };
-      this.LOGIN(formdata);
+
+      try {
+        await this.LOGIN(formdata);
+
+        const redirect = this.$route.query.redirect;
+        const isInternalRoute =
+          typeof redirect === "string" &&
+          redirect.startsWith("/") &&
+          !redirect.startsWith("//");
+
+        return this.$router.replace(
+          isInternalRoute ? redirect : { name: "dashboard" }
+        );
+      } catch {
+        // The login action displays the authentication error.
+      }
     },
   },
 };
