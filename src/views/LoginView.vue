@@ -30,44 +30,21 @@
               required
             />
 
-            <div class="password-field">
-              <FormGroup
-                id="password"
-                v-model="password"
-                :type="showPassword ? 'text' : 'password'"
-                autocomplete="current-password"
-                placeholder="Palavra-passe"
-                aria-label="Palavra-passe"
-                required
-              />
-              <button
-                class="password-toggle"
-                type="button"
-                :aria-label="
-                  showPassword
-                    ? 'Ocultar palavra-passe'
-                    : 'Mostrar palavra-passe'
-                "
-                :aria-pressed="showPassword"
-                @click="togglePasswordVisibility"
-              >
-                <svg
-                  v-if="!showPassword"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2.25 12s3.5-6 9.75-6 9.75 6 9.75 6-3.5 6-9.75 6-9.75-6-9.75-6Z"
-                  />
-                  <circle cx="12" cy="12" r="2.75" />
-                </svg>
-                <svg v-else viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="m3 3 18 18M10.6 6.1c.46-.07.93-.1 1.4-.1 6.25 0 9.75 6 9.75 6a16.3 16.3 0 0 1-2.3 3.1M6.5 6.7C3.75 8.5 2.25 12 2.25 12s3.5 6 9.75 6c1.2 0 2.3-.22 3.28-.58M9.9 9.9a3 3 0 0 0 4.2 4.2"
-                  />
-                </svg>
-              </button>
-            </div>
+            <FormGroup
+              id="password"
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              :icon="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+              :icon-label="
+                showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'
+              "
+              icon-clickable
+              autocomplete="current-password"
+              placeholder="Palavra-passe"
+              aria-label="Palavra-passe"
+              required
+              @icon-click="togglePasswordVisibility"
+            />
           </div>
 
           <div class="login-options">
@@ -203,25 +180,6 @@ export default {
 
 .fields {
   @apply text-left;
-}
-
-.password-field {
-  @apply relative;
-}
-
-.password-toggle {
-  @apply absolute right-4 top-3 flex h-6 w-6 items-center justify-center rounded text-slate-500 transition hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30;
-}
-
-.password-toggle svg {
-  @apply h-5 w-5 fill-none stroke-current;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.password-field :deep(.form-control) {
-  @apply pr-12;
 }
 
 .login-options {

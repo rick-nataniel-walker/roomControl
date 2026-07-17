@@ -23,7 +23,7 @@ describe("LoginView", () => {
     const wrapper = mountLogin();
 
     expect(wrapper.get("#password").attributes("type")).toBe("password");
-    await wrapper.get(".password-toggle").trigger("click");
+    await wrapper.get(".inner-icon-button").trigger("click");
     expect(wrapper.get("#password").attributes("type")).toBe("text");
   });
 });

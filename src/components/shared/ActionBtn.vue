@@ -1,13 +1,16 @@
 <template>
   <button class="btn-primary" :type="type" :disabled="disabled || loading">
-    <i v-if="icon" :class="icon" aria-hidden="true"></i>
+    <FontAwesomeIcon v-if="icon" :icon="icon" />
     <span>{{ loading ? loadingText : text }}</span>
   </button>
 </template>
 
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 export default {
   name: "ActionBtn",
+  components: { FontAwesomeIcon },
   props: {
     text: {
       type: String,

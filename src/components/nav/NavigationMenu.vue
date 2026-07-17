@@ -10,7 +10,29 @@ export default {
   data() {
     return {
       navyLogo,
+      menuItems: [
+        { label: "Dashboard", icon: "home", route: { name: "dashboard" } },
+        { label: "Quartos", icon: "bed", route: { name: "rooms" } },
+        {
+          label: "Reservas",
+          icon: "money-check",
+          route: { name: "reservations" },
+        },
+        {
+          label: "Relatórios",
+          icon: "chart-line",
+          route: { name: "reports" },
+        },
+      ],
     };
+  },
+  methods: {
+    isActive(route) {
+      return this.$route.name === route;
+    },
+    navigateTo(route) {
+      this.$router.push(route);
+    },
   },
 };
 </script>
@@ -24,10 +46,15 @@ export default {
       class="brand-logo px-2 pb-3 gap-12"
       alt="RoomControl, powered by TrueControl"
     />
-    <NavigationMenuItem label="Dashboard" icon="home" active class="my-2" />
-    <NavigationMenuItem label="Quartos" icon="bed" class="my-2" />
-    <NavigationMenuItem label="Reservas" icon="money-check" class="my-2" />
-    <NavigationMenuItem label="Relatórios" icon="chart-line" class="my-2" />
+    <NavigationMenuItem
+      v-for="menuItem in menuItems"
+      :key="menuItem.label"
+      @click="navigateTo(menuItem.route)"
+      :label="menuItem.label"
+      :icon="menuItem.icon"
+      class="my-2"
+      :active="isActive(menuItem.route.name)"
+    />
   </div>
 </template>
 

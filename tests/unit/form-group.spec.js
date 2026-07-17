@@ -37,4 +37,44 @@ describe("FormGroup", () => {
     expect(wrapper.find(".form-error").exists()).toBe(false);
     expect(wrapper.get("input").attributes("aria-invalid")).toBeUndefined();
   });
+
+  it("renders an optional clickable icon inside the input", async () => {
+    const wrapper = mount(FormGroup, {
+      props: {
+        modelValue: "",
+        icon: "fa-eye",
+        iconClickable: true,
+        iconLabel: "Mostrar palavra-passe",
+      },
+      global: {
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    });
+
+    expect(wrapper.get("input").classes()).toContain("has-inner-icon");
+    expect(wrapper.get(".inner-icon-button").attributes("aria-label")).toBe(
+      "Mostrar palavra-passe"
+    );
+
+    await wrapper.get(".inner-icon-button").trigger("click");
+    expect(wrapper.emitted("icon-click")).toHaveLength(1);
+  });
+
+  it("keeps the select native arrow instead of rendering a custom icon", () => {
+    const wrapper = mount(FormGroup, {
+      props: {
+        modelValue: "",
+        inputType: "select",
+        icon: "fa-chevron-down",
+      },
+      slots: {
+        default: '<option value="one">One</option>',
+      },
+    });
+
+    expect(wrapper.find(".inner-icon").exists()).toBe(false);
+    expect(wrapper.get("select").classes()).not.toContain("has-inner-icon");
+  });
 });

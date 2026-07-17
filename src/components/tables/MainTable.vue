@@ -1,15 +1,18 @@
 <template>
-  <div class="bg-white rounded-xl shadow-md overflow-hidden">
-    <table>
-      <thead>
-        <tr>
-          <slot name="headers"></slot>
-        </tr>
-      </thead>
-      <tbody>
-        <slot name="body"></slot>
-      </tbody>
-    </table>
+  <div class="main-table-shell">
+    <div class="main-table-scroll">
+      <table class="main-table">
+        <thead>
+          <tr>
+            <slot name="headers"></slot>
+          </tr>
+        </thead>
+        <tbody>
+          <slot name="body"></slot>
+        </tbody>
+      </table>
+    </div>
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -20,32 +23,42 @@ export default {
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
+.main-table-shell {
+  @apply w-full overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-card;
 }
 
-thead {
-  background: rgba(0, 53, 26, 0.05);
+.main-table-scroll {
+  @apply w-full overflow-x-auto;
 }
 
-th {
-  @apply py-4 px-8 font-black text-primary text-left border-b border-gray-200;
+.main-table {
+  @apply w-full min-w-[640px] border-collapse text-left;
 }
 
-td {
-  @apply py-4 px-8 border-b border-gray-100;
-}
-tbody tr {
-  @apply hover:bg-secondary-light;
+.main-table thead {
+  @apply bg-slate-50;
 }
 
-tr:last-child td {
-  border-bottom: none;
+.main-table th {
+  @apply border-b border-slate-200 px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500;
 }
-@media (min-width: 992px) {
-  .form-row {
-    grid-template-columns: 1fr 1fr;
+
+.main-table td {
+  @apply border-b border-slate-100 px-5 py-4 text-sm text-primary;
+}
+
+.main-table tbody tr {
+  @apply transition duration-200 hover:bg-slate-50;
+}
+
+.main-table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+@media (min-width: 768px) {
+  .main-table th,
+  .main-table td {
+    @apply px-6;
   }
 }
 </style>

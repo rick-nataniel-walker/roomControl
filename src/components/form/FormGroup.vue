@@ -10,21 +10,37 @@
       >
       <span v-if="isRequired" class="sr-only">(obrigatório)</span>
     </label>
-    <component
-      :is="inputType"
-      :value="modelValue"
-      v-bind="$attrs"
-      :type="type"
-      class="form-control"
-      :aria-invalid="showRequiredError ? 'true' : undefined"
-      :aria-describedby="describedBy"
-      @input="handleInput"
-      @change="handleChange"
-      @blur="handleBlur"
-      @invalid="handleInvalid"
-    >
-      <slot></slot>
-    </component>
+    <div class="control-wrapper">
+      <component
+        :is="controlTag"
+        :value="modelValue"
+        v-bind="$attrs"
+        :type="controlType"
+        class="form-control"
+        :class="{ 'has-inner-icon': showsIcon }"
+        :aria-invalid="showRequiredError ? 'true' : undefined"
+        :aria-describedby="describedBy"
+        @input="handleInput"
+        @change="handleChange"
+        @blur="handleBlur"
+        @invalid="handleInvalid"
+      >
+        <slot></slot>
+      </component>
+
+      <button
+        v-if="showsIcon && iconClickable"
+        class="inner-icon inner-icon-button"
+        type="button"
+        :aria-label="iconLabel"
+        @click="$emit('icon-click')"
+      >
+        <FontAwesomeIcon :icon="icon" />
+      </button>
+      <span v-else-if="showsIcon" class="inner-icon" aria-hidden="true">
+        <FontAwesomeIcon :icon="icon" />
+      </span>
+    </div>
     <p v-if="showRequiredError" :id="errorId" class="form-error" role="alert">
       {{ requiredMessage }}
     </p>
@@ -33,8 +49,11 @@
 </template>
 
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 export default {
   name: "FormGroup",
+  components: { FontAwesomeIcon },
   inheritAttrs: false,
   props: {
     label: String,
@@ -49,19 +68,41 @@ export default {
       type: String,
       default: "text",
     },
+    icon: {
+      type: [String, Array, Object],
+      default: "",
+    },
+    iconClickable: Boolean,
+    iconLabel: {
+      type: String,
+      default: "Ação do campo",
+    },
     requiredMessage: {
       type: String,
       default: "Este campo é obrigatório.",
     },
     row: Boolean,
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "icon-click"],
   data() {
     return {
       touched: false,
     };
   },
   computed: {
+    controlTag() {
+      return this.inputType === "file" ? "input" : this.inputType;
+    },
+    controlType() {
+      if (this.inputType === "file") {
+        return "file";
+      }
+
+      return this.inputType === "input" ? this.type : undefined;
+    },
+    showsIcon() {
+      return Boolean(this.icon) && this.inputType !== "select";
+    },
     isRequired() {
       return (
         this.$attrs.required !== undefined && this.$attrs.required !== false
@@ -128,7 +169,7 @@ export default {
 }
 
 .form-label {
-  @apply mb-2 block text-sm font-semibold text-primary;
+  @apply block text-sm text-primary mb-1;
 }
 
 .required-marker {
@@ -137,6 +178,26 @@ export default {
 
 .form-control {
   @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-primary shadow-sm outline-none transition placeholder:text-slate-400 focus:border-secondary focus:ring-2 focus:ring-secondary/20;
+}
+
+.control-wrapper {
+  @apply relative;
+}
+
+.form-control.has-inner-icon {
+  @apply pr-12;
+}
+
+.inner-icon {
+  @apply absolute right-4 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center text-slate-500;
+}
+
+.inner-icon-button {
+  @apply rounded transition hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30;
+}
+
+select.form-control {
+  padding-right: 5px;
 }
 
 .has-error .form-control {
