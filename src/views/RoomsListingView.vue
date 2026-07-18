@@ -5,10 +5,42 @@ import FormGroup from "@/components/form/FormGroup.vue";
 import MainTable from "@/components/tables/MainTable.vue";
 import TextBadge from "@/components/shared/TextBadge.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "RoomsView",
-  components: { FontAwesomeIcon, TextBadge, MainTable, FormGroup, ContentWrapper, ActionBtn },
+  name: "RoomsListingView",
+  components: {
+    FontAwesomeIcon,
+    TextBadge,
+    MainTable,
+    FormGroup,
+    ContentWrapper,
+    ActionBtn,
+  },
+  computed: {
+    ...mapState(["rooms"]),
+  },
+  methods: {
+    ...mapActions(["FETCH_ROOM"]),
+    goTo(route) {
+      return this.$router.push(route);
+    },
+    mapStatus(status) {
+      switch (status) {
+        case "free":
+          return "success";
+        case "busy":
+          return "danger";
+        case "maintenance":
+          return "basic";
+        case "cleaning":
+          return "warning";
+      }
+    },
+  },
+  beforeMount() {
+    this.FETCH_ROOM();
+  },
 };
 </script>
 
@@ -48,24 +80,28 @@ export default {
           <th class="p-4">Acções</th>
         </template>
         <template #body>
-          <tr class="my-2 border-b border-gray-200">
-            <td class="p-4">1</td>
-            <td class="p-4">Room 1</td>
+          <tr
+            class="my-1 border-b border-gray-200"
+            v-for="room in this.rooms"
+            :key="room.id"
+          >
+            <td class="p-4">{{ room.id }}</td>
+            <td class="p-4">{{ room.name }}</td>
             <td class="p-4">
-              <TextBadge type="success" value="Desecupado" />
+              <TextBadge
+                :type="mapStatus(room.status.toLowerCase())"
+                :value="room.status"
+              />
             </td>
-            <td class="p-4">0h:00min</td>
-            <td class="p-4">
-              <FontAwesomeIcon icon="pen-to-square" />
+            <td class="p-4">{{ room.remaining }}</td>
+            <td class="p-4 gap-4">
+              <FontAwesomeIcon icon="pen-to-square" class="cursor-pointer" />
+              <FontAwesomeIcon
+                icon="ellipsis-vertical"
+                class="cursor-pointer mx-1"
+                @click="goTo({ name: 'room', params: { id: room.id } })"
+              />
             </td>
-          </tr>
-          <tr class="my-1 border-b border-gray-200">
-            <td class="p-4">2</td>
-            <td class="p-4">Room 2</td>
-            <td class="p-4">
-              <TextBadge type="warning" value="Ocupado" />
-            </td>
-            <td class="p-4">1h:30min</td>
           </tr>
         </template>
       </MainTable>

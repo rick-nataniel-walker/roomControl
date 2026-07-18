@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import store from "@/store";
-import RoomsView from "@/views/RoomsView.vue";
+import RoomsListingView from "@/views/RoomsListingView.vue";
 
 const routes = [
   {
@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/rooms",
     name: "rooms",
-    component: RoomsView,
+    component: RoomsListingView,
     meta: { requiresAuth: false },
   },
 ];
