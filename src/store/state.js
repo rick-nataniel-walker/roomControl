@@ -17,4 +17,15 @@ export const state = {
       remaining: "0h:30min",
     },
   ],
+  room: {
+    id: "",
+    name: "",
+    lockId: "",
+    status: "",
+    reservations: [],
+    ttLockAccesses: [],
+    tenant: "",
+    image: "",
+    remaining: "00h:00min",
+  },
 };

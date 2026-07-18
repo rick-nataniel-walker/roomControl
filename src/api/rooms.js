@@ -6,3 +6,6 @@ export const fetchRooms = () => {
     headers: { "Content-Type": "application/json" },
   });
 };
+export const saveRoom = (formData) => {
+  return apiClient.post(uri, formData);
+};

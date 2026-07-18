@@ -1,8 +1,8 @@
-import { LOGIN } from "@/store/constants";
+import { LOGIN, SAVE_ROOM } from "@/store/constants";
 import { login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
-import { fetchRooms } from "@/api/rooms";
+import { fetchRooms, saveRoom } from "@/api/rooms";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -20,6 +20,7 @@ export const actions = {
         throw error;
       });
   },
+
   [FETCH_ROOM](context) {
     return fetchRooms()
       .then((response) => {
@@ -30,6 +31,22 @@ export const actions = {
         showAlert({
           type: "error",
           title: "Não foi possível busca quartos!",
+          message: error.response.data.message,
+        });
+
+        throw error;
+      });
+  },
+
+  [SAVE_ROOM](context, formdata) {
+    return saveRoom(formdata)
+      .then((response) => {
+        context.commit(SAVE_ROOM, response.data);
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não guardar o quarto!",
           message: error.response.data.message,
         });
 

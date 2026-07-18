@@ -1,4 +1,4 @@
-import { LOGIN } from "@/store/constants";
+import { LOGIN, SAVE_ROOM } from "@/store/constants";
 import { FETCH_ROOM } from "@/store/constants";
 
 export const mutations = {
@@ -11,5 +11,22 @@ export const mutations = {
 
   [FETCH_ROOM](state, payload) {
     state.rooms = payload;
+  },
+
+  [SAVE_ROOM](state, payload) {
+    state.rooms = { ...payload };
+  },
+  resetRoom(state) {
+    state.room = {
+      id: "",
+      name: "",
+      lockId: "",
+      status: "",
+      reservations: [],
+      ttLockAccesses: [],
+      tenant: "",
+      image: "",
+      remaining: "00h:00min",
+    };
   },
 };

@@ -1,5 +1,10 @@
 <template>
-  <button class="btn-primary" :type="type" :disabled="disabled || loading">
+  <button
+    class="action-btn"
+    :class="`action-btn--${variant}`"
+    :type="type"
+    :disabled="disabled || loading"
+  >
     <FontAwesomeIcon v-if="icon" :icon="icon" />
     <span>{{ loading ? loadingText : text }}</span>
   </button>
@@ -30,25 +35,50 @@ export default {
       type: String,
       default: "Aguarde...",
     },
+    variant: {
+      type: String,
+      default: "action",
+      validator: (value) => ["action", "cancel", "delete"].includes(value),
+    },
   },
 };
 </script>
 
 <style scoped>
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg border-0 bg-secondary px-6 py-3 font-semibold text-white transition duration-200;
+.action-btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border-0 px-6 py-3 font-semibold transition duration-200;
 }
 
-.btn-primary:hover:not(:disabled) {
+.action-btn--action {
+  @apply bg-secondary text-white;
+}
+
+.action-btn--action:hover:not(:disabled) {
   @apply -translate-y-0.5 bg-primary shadow-lg;
   box-shadow: 0 8px 20px rgba(13, 27, 61, 0.22);
 }
 
-.btn-primary:focus-visible {
+.action-btn--cancel {
+  @apply bg-lightVariants-lightgray text-primary;
+}
+
+.action-btn--cancel:hover:not(:disabled) {
+  @apply -translate-y-0.5 bg-lightgray shadow-md;
+}
+
+.action-btn--delete {
+  @apply bg-red-500 text-white;
+}
+
+.action-btn--delete:hover:not(:disabled) {
+  @apply -translate-y-0.5 bg-red-600 shadow-md;
+}
+
+.action-btn:focus-visible {
   @apply outline-none ring-2 ring-secondary ring-offset-2;
 }
 
-.btn-primary:disabled {
+.action-btn:disabled {
   @apply cursor-not-allowed opacity-60;
 }
 </style>

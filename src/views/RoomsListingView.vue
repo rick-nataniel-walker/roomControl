@@ -47,7 +47,11 @@ export default {
 <template>
   <ContentWrapper title="Quartos">
     <template #header>
-      <ActionBtn text="Novo Quarto" icon="plus" />
+      <ActionBtn
+        text="Novo Quarto"
+        icon="plus"
+        @click="goTo({ name: 'addRoom' })"
+      />
     </template>
     <template #body>
       <div class="flex justify-between">
@@ -99,7 +103,7 @@ export default {
               <FontAwesomeIcon
                 icon="ellipsis-vertical"
                 class="cursor-pointer mx-1"
-                @click="goTo({ name: 'room', params: { id: room.id } })"
+                @click="goTo({ name: 'editRoom', params: { id: room.id } })"
               />
             </td>
           </tr>

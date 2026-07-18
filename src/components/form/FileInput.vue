@@ -1,6 +1,17 @@
 <template>
   <div class="relative w-full form-group">
     <label v-if="label" class="form-label">{{ label }}</label>
+    <div
+      v-if="preview"
+      class="file-preview"
+      aria-label="Pré-visualização do ficheiro"
+    >
+      <img
+        :id="previewId"
+        class="file-preview__image"
+        :alt="`Pré-visualização de ${label}`"
+      />
+    </div>
     <input
       :type="type"
       :name="name"
@@ -87,6 +98,11 @@ export default {
       required: false,
       default: true,
     },
+    preview: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
@@ -97,10 +113,18 @@ export default {
     hasError() {
       return this.validationErrors.length > 0;
     },
+    previewId() {
+      return `${this.name}-preview`;
+    },
   },
   methods: {
     upload() {
-      uploadFile(this.name, this.id, this.returnAsBase64).then((r) => {
+      uploadFile(
+        this.name,
+        this.id,
+        this.returnAsBase64,
+        this.preview ? this.previewId : null
+      ).then((r) => {
         this.base64 = r;
         this.$emit("base64Img", this.base64);
       });
@@ -139,10 +163,18 @@ export default {
 }
 
 .form-label {
-  @apply block mb-2 font-semibold text-primary;
+  @apply block mb-2 text-primary;
 }
 
 .form-control {
   @apply w-full px-8 py-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-base focus:outline-none focus:border-secondary active:border-secondary;
+}
+
+.file-preview {
+  @apply flex items-center justify-center w-full min-h-[17rem] mb-1 overflow-hidden border border-dashed border-[rgba(0,0,0,0.1)] rounded-lg;
+}
+
+.file-preview__image {
+  @apply block max-w-full max-h-80 object-contain;
 }
 </style>

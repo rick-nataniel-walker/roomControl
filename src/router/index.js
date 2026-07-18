@@ -3,6 +3,7 @@ import LoginView from "@/views/LoginView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import store from "@/store";
 import RoomsListingView from "@/views/RoomsListingView.vue";
+import RoomsActionView from "@/views/RoomsActionView.vue";
 
 const routes = [
   {
@@ -15,13 +16,29 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: "/rooms",
-    name: "rooms",
-    component: RoomsListingView,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "",
+        name: "rooms",
+        component: RoomsListingView,
+      },
+      {
+        path: "new",
+        name: "addRoom",
+        component: RoomsActionView,
+      },
+      {
+        path: ":id",
+        name: "editRoom",
+        component: RoomsActionView,
+        props: true,
+      },
+    ],
   },
 ];
 

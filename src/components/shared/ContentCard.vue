@@ -3,12 +3,13 @@ export default {
   name: "ContentCard",
   props: {
     title: { type: String, required: true },
+    styled: { type: Boolean, required: false, default: true },
   },
 };
 </script>
 
 <template>
-  <div class="card styled">
+  <div :class="[styled, 'card']">
     <h2 class="text-lg font-bold mb-4">{{ title }}</h2>
     <slot></slot>
   </div>
