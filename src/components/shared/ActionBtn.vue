@@ -59,7 +59,7 @@ export default {
 }
 
 .action-btn--cancel {
-  @apply bg-lightVariants-lightgray text-primary;
+  @apply bg-white text-primary;
 }
 
 .action-btn--cancel:hover:not(:disabled) {

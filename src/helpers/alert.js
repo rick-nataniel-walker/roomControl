@@ -10,7 +10,7 @@ const showAlert = (options) => {
         onDismiss: () => {
           setTimeout(() => {
             alertApp.unmount();
-          }, 300); // wait for animation to finish
+          }, 10000); // wait for animation to finish
         },
       });
     },

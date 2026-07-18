@@ -14,7 +14,7 @@ export const mutations = {
   },
 
   [SAVE_ROOM](state, payload) {
-    state.rooms = { ...payload };
+    state.room = { ...payload };
   },
   resetRoom(state) {
     state.room = {

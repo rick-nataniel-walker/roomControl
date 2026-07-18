@@ -41,16 +41,19 @@ export const actions = {
   [SAVE_ROOM](context, formdata) {
     return saveRoom(formdata)
       .then((response) => {
-        context.commit(SAVE_ROOM, response.data);
+        showAlert({
+          type: "success",
+          title: "Sucesso",
+          message: "Efectuado com sucesso",
+        });
+        return response.data;
       })
       .catch((error) => {
         showAlert({
           type: "error",
-          title: "Não guardar o quarto!",
+          title: "Erro ao guardar o quarto!",
           message: error.response.data.message,
         });
-
-        throw error;
       });
   },
 };

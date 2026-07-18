@@ -7,5 +7,7 @@ export const fetchRooms = () => {
   });
 };
 export const saveRoom = (formData) => {
-  return apiClient.post(uri, formData);
+  return formData.id
+    ? apiClient.put(`${uri}${formData.id}`, formData)
+    : apiClient.post(uri, formData);
 };

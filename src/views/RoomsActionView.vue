@@ -11,19 +11,34 @@ export default {
   name: "RoomsActionView",
   components: { ActionBtn, FileInput, ContentCard, ContentWrapper, FormGroup },
   computed: {
-    ...mapState(["room"]),
+    ...mapState(["room", "rooms"]),
+  },
+  data() {
+    return {
+      roomCopy: null,
+    };
   },
   methods: {
     ...mapActions([SAVE_ROOM]),
     ...mapMutations(["resetRoom"]),
-    saveRoom() {
-      this.SAVE_ROOM(this.room);
-      this.resetRoom();
-      this.goTo({ name: "rooms" });
+    async saveRoom() {
+      this.roomCopy = await this.SAVE_ROOM(this.room);
+      if (this.roomCopy) {
+        this.roomCopy = null;
+        this.resetRoom();
+        this.goTo({ name: "rooms" });
+      }
     },
     goTo(route) {
       this.$router.push(route);
     },
+  },
+  beforeMount() {
+    this.roomCopy = null;
+    if (this.$route.params.id) {
+      this.$store.state.room = { ...this.rooms[this.$route.params.id] };
+      if (!this.room.id) this.goTo({ name: "rooms" });
+    }
   },
 };
 </script>
@@ -47,9 +62,9 @@ export default {
           v-model="this.room.image"
           preview
         />
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-4">
+          <ActionBtn text="Cancelar" v-if="this.room.id" variant="cancel" />
           <ActionBtn text="Guardar o quarto" icon="save" @click="saveRoom" />
-          <ActionBtn text="Cancelar" icon="arrow-left" v-if="this.room.id" />
         </div>
       </content-card>
     </template>

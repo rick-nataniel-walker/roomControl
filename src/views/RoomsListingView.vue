@@ -5,7 +5,8 @@ import FormGroup from "@/components/form/FormGroup.vue";
 import MainTable from "@/components/tables/MainTable.vue";
 import TextBadge from "@/components/shared/TextBadge.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
+import { FETCH_ROOM, SAVE_ROOM } from "@/store/constants";
 
 export default {
   name: "RoomsListingView",
@@ -21,7 +22,8 @@ export default {
     ...mapState(["rooms"]),
   },
   methods: {
-    ...mapActions(["FETCH_ROOM"]),
+    ...mapActions([FETCH_ROOM]),
+    ...mapMutations([SAVE_ROOM]),
     goTo(route) {
       return this.$router.push(route);
     },
@@ -38,8 +40,8 @@ export default {
       }
     },
   },
-  beforeMount() {
-    this.FETCH_ROOM();
+  async beforeMount() {
+    await this.FETCH_ROOM();
   },
 };
 </script>
@@ -86,7 +88,7 @@ export default {
         <template #body>
           <tr
             class="my-1 border-b border-gray-200"
-            v-for="room in this.rooms"
+            v-for="(room, index) in this.rooms"
             :key="room.id"
           >
             <td class="p-4">{{ room.id }}</td>
@@ -99,11 +101,14 @@ export default {
             </td>
             <td class="p-4">{{ room.remaining }}</td>
             <td class="p-4 gap-4">
-              <FontAwesomeIcon icon="pen-to-square" class="cursor-pointer" />
+              <FontAwesomeIcon
+                icon="pen-to-square"
+                class="cursor-pointer"
+                @click="goTo({ name: 'editRoom', params: { id: index } })"
+              />
               <FontAwesomeIcon
                 icon="ellipsis-vertical"
                 class="cursor-pointer mx-1"
-                @click="goTo({ name: 'editRoom', params: { id: room.id } })"
               />
             </td>
           </tr>

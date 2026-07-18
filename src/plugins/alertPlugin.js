@@ -13,7 +13,7 @@ export default {
               setTimeout(() => {
                 alertApp.unmount();
                 document.body.removeChild(container);
-              }, 300);
+              }, 15000);
             },
           });
         },
