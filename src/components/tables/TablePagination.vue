@@ -1,6 +1,6 @@
 <template>
   <div
-    class="pagination flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200"
+    class="pagination flex items-center justify-between px-4 py-3 bg-white border-t border-slate-200 rounded"
   >
     <div class="pagination-info text-sm text-gray-600">
       Mostrando {{ pagination.startItem }} a {{ pagination.endItem }} de
@@ -12,12 +12,9 @@
         @click="$emit('page-changed', pagination.currentPage - 1)"
         :disabled="!pagination.hasPreviousPage"
         class="pagination-button"
-        :class="{
-          'cursor-not-allowed opacity-50': !pagination.hasPreviousPage,
-          'hover:bg-gray-50': pagination.hasPreviousPage,
-        }"
+        aria-label="Página anterior"
       >
-        <i class="fas fa-chevron-left"></i>
+        <FontAwesomeIcon icon="chevron-left" />
       </button>
 
       <div class="flex space-x-1">
@@ -35,9 +32,9 @@
           @click="$emit('page-changed', page)"
           class="pagination-page-button"
           :class="{
-            'bg-primary-600 text-white': page === pagination.currentPage,
-            'hover:bg-gray-50': page !== pagination.currentPage,
+            'pagination-page-button--active': page === pagination.currentPage,
           }"
+          :aria-current="page === pagination.currentPage ? 'page' : undefined"
         >
           {{ page }}
         </button>
@@ -55,12 +52,9 @@
         @click="$emit('page-changed', pagination.currentPage + 1)"
         :disabled="!pagination.hasNextPage"
         class="pagination-button"
-        :class="{
-          'cursor-not-allowed opacity-50': !pagination.hasNextPage,
-          'hover:bg-gray-50': pagination.hasNextPage,
-        }"
+        aria-label="Próxima página"
       >
-        <i class="fas fa-chevron-right"></i>
+        <FontAwesomeIcon icon="chevron-right" />
       </button>
 
       <div class="ml-4 text-sm text-gray-600">
@@ -80,8 +74,11 @@
 </template>
 
 <script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 export default {
   name: "TablePagination",
+  components: { FontAwesomeIcon },
   props: {
     pagination: {
       type: Object,
@@ -108,14 +105,38 @@ export default {
 
 <style scoped>
 .pagination-button {
-  @apply w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-700;
+  @apply w-8 h-8 flex items-center justify-center rounded-md border border-secondary bg-lightVariants-royalBlue text-secondary transition duration-200;
+}
+
+.pagination-button:hover:not(:disabled) {
+  @apply bg-secondary text-white;
+}
+
+.pagination-button:focus-visible,
+.pagination-page-button:focus-visible,
+.items-per-page-select:focus-visible {
+  @apply outline-none ring-2 ring-secondary ring-offset-2;
+}
+
+.pagination-button:disabled {
+  @apply cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300;
 }
 
 .pagination-page-button {
-  @apply w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-sm font-medium text-gray-700;
+  @apply w-8 h-8 flex items-center justify-center rounded-md border border-slate-200 bg-white text-sm font-medium text-slate-600 transition duration-200;
+}
+
+.pagination-page-button:hover:not(:disabled):not(
+    .pagination-page-button--active
+  ) {
+  @apply border-secondary bg-lightVariants-royalBlue text-secondary;
+}
+
+.pagination-page-button--active {
+  @apply border-secondary bg-secondary text-white shadow-sm;
 }
 
 .items-per-page-select {
-  @apply border-gray-300 focus:border-green-600 focus:ring-1 focus:ring-green-600;
+  @apply border-slate-300 text-primary focus:border-secondary;
 }
 </style>

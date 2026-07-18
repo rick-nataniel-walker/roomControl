@@ -7,10 +7,13 @@ import TextBadge from "@/components/shared/TextBadge.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { FETCH_ROOM, SAVE_ROOM } from "@/store/constants";
+import { getPaginationControls, paginate } from "@/helpers/Paginator";
+import TablePagination from "@/components/tables/TablePagination.vue";
 
 export default {
   name: "RoomsListingView",
   components: {
+    TablePagination,
     FontAwesomeIcon,
     TextBadge,
     MainTable,
@@ -20,6 +23,23 @@ export default {
   },
   computed: {
     ...mapState(["rooms"]),
+    paginationResult() {
+      return paginate(this.rooms, {
+        currentPage: this.currentPage,
+        itemsPerPage: this.itemsPerPage,
+      });
+    },
+
+    // Get pagination controls metadata
+    paginationControls() {
+      return getPaginationControls(this.paginationResult);
+    },
+  },
+  data() {
+    return {
+      currentPage: 1,
+      itemsPerPage: 5,
+    };
   },
   methods: {
     ...mapActions([FETCH_ROOM]),
@@ -38,6 +58,12 @@ export default {
         case "cleaning":
           return "warning";
       }
+    },
+    handlePageChange(page) {
+      this.currentPage = page;
+    },
+    handleItemsPerPageChange(itemsPerPage) {
+      this.itemsPerPage = itemsPerPage;
     },
   },
   async beforeMount() {
@@ -88,7 +114,7 @@ export default {
         <template #body>
           <tr
             class="my-1 border-b border-gray-200"
-            v-for="(room, index) in this.rooms"
+            v-for="(room, index) in paginationResult.items"
             :key="room.id"
           >
             <td class="p-4">{{ room.id }}</td>
@@ -114,6 +140,12 @@ export default {
           </tr>
         </template>
       </MainTable>
+      <TablePagination
+        v-if="paginationResult.totalItems > 0"
+        :pagination="paginationControls"
+        @page-changed="handlePageChange"
+        @items-per-page-changed="handleItemsPerPageChange"
+      />
     </template>
   </ContentWrapper>
 </template>
