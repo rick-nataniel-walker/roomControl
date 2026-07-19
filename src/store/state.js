@@ -24,4 +24,12 @@ export const state = {
     image: "",
     remaining: "00h:00min",
   },
+  systemConfig: {
+    roomStatues: {
+      free: "Desocupado",
+      busy: "Ocupado",
+      maintenance: "Em manutenção",
+      cleaning: "Em limpeza",
+    },
+  },
 };

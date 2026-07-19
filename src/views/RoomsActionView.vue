@@ -36,7 +36,7 @@ export default {
   beforeMount() {
     this.roomCopy = null;
     if (this.$route.params.id) {
-      this.$store.state.room = { ...this.rooms[this.$route.params.id] };
+      this.$store.state.room = { ...this.rooms.data[this.$route.params.id] };
       if (!this.room.id) this.goTo({ name: "rooms" });
     }
   },

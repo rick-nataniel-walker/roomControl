@@ -1,8 +1,18 @@
-import { LOGIN, SAVE_ROOM } from "@/store/constants";
+import {
+  FETCH_ROOM_BY_NAME,
+  FETCH_ROOM_BY_STATUS,
+  LOGIN,
+  SAVE_ROOM,
+} from "@/store/constants";
 import { login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
-import { fetchRooms, saveRoom } from "@/api/rooms";
+import {
+  fetchRooms,
+  fetchRoomsByName,
+  fetchRoomsByStatus,
+  saveRoom,
+} from "@/api/rooms";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -41,6 +51,48 @@ export const actions = {
         });
 
         throw error;
+      });
+  },
+  [FETCH_ROOM_BY_STATUS](
+    context,
+    status,
+    pagination = {
+      currentPage: 0,
+      itemsPerPage: 5,
+    }
+  ) {
+    return fetchRoomsByStatus(status, pagination)
+      .then((response) => {
+        context.commit(FETCH_ROOM, response.data);
+        return response;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível busca quartos!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [FETCH_ROOM_BY_NAME](
+    context,
+    name,
+    pagination = {
+      currentPage: 0,
+      itemsPerPage: 5,
+    }
+  ) {
+    return fetchRoomsByName(name, pagination)
+      .then((response) => {
+        context.commit(FETCH_ROOM, response.data);
+        return response;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível busca quartos!",
+          message: error.response.data.message,
+        });
       });
   },
 

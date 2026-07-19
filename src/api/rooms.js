@@ -15,3 +15,23 @@ export const saveRoom = (formData) => {
     ? apiClient.put(`${uri}${formData.id}`, formData)
     : apiClient.post(uri, formData);
 };
+
+export const fetchRoomsByStatus = (status, { currentPage, itemsPerPage }) => {
+  return apiClient.get(`${uri}status/${status}`, {
+    headers: { "Content-Type": "application/json" },
+    params: {
+      pageNumber: currentPage,
+      pageSize: itemsPerPage,
+    },
+  });
+};
+
+export const fetchRoomsByName = (name, { currentPage, itemsPerPage }) => {
+  return apiClient.get(`${uri}name/${name}`, {
+    headers: { "Content-Type": "application/json" },
+    params: {
+      pageNumber: currentPage,
+      pageSize: itemsPerPage,
+    },
+  });
+};

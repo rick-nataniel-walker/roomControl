@@ -14,6 +14,8 @@
             label=""
             placeholder="Pesquisar um quarto..."
             icon="magnifying-glass"
+            v-model="roomName"
+            @update:model-value="searchRoom"
           />
         </div>
         <div>
@@ -21,10 +23,16 @@
             label=""
             input-type="select"
             placeholder="Breve resumo do artigo..."
+            v-model="roomStatus"
+            @update:model-value="handleStatusChange"
           >
-            <option value="valor 1" selected>Valor 1</option>
-            <option value="valor 1">Valor 3</option>
-            <option value="valor 1">Valor 4</option>
+            <option
+              v-for="roomStatus in Object.keys(systemConfig.roomStatues)"
+              :key="roomStatus"
+              :value="roomStatus"
+            >
+              {{ systemConfig.roomStatues[roomStatus] }}
+            </option>
           </FormGroup>
         </div>
       </div>
@@ -62,6 +70,7 @@
                 icon="ellipsis-vertical"
                 class="cursor-pointer mx-1"
               />
+              <DropdownMenu dropdown-list=""
             </td>
           </tr>
         </template>
@@ -83,14 +92,21 @@ import MainTable from "@/components/tables/MainTable.vue";
 import TextBadge from "@/components/shared/TextBadge.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { mapActions, mapMutations, mapState } from "vuex";
-import { FETCH_ROOM, SAVE_ROOM } from "@/store/constants";
+import {
+  FETCH_ROOM,
+  FETCH_ROOM_BY_NAME,
+  FETCH_ROOM_BY_STATUS,
+  SAVE_ROOM,
+} from "@/store/constants";
 import { getPaginationControls, paginate } from "@/helpers/Paginator";
 import TablePagination from "@/components/tables/TablePagination.vue";
 import store from "@/store";
+import DropdownMenu from "@/components/shared/DropdownMenu.vue";
 
 export default {
   name: "RoomsListingView",
   components: {
+    DropdownMenu,
     TablePagination,
     FontAwesomeIcon,
     TextBadge,
@@ -100,7 +116,7 @@ export default {
     ActionBtn,
   },
   computed: {
-    ...mapState(["rooms"]),
+    ...mapState(["rooms", "systemConfig"]),
 
     paginationResult() {
       return paginate(
@@ -117,8 +133,14 @@ export default {
       return getPaginationControls(this.paginationResult);
     },
   },
+  data() {
+    return {
+      roomStatus: "",
+      roomName: "",
+    };
+  },
   methods: {
-    ...mapActions([FETCH_ROOM]),
+    ...mapActions([FETCH_ROOM, FETCH_ROOM_BY_STATUS, FETCH_ROOM_BY_NAME]),
     ...mapMutations([SAVE_ROOM]),
     goTo(route) {
       return this.$router.push(route);
@@ -140,6 +162,13 @@ export default {
         currentPage: page - 1,
         itemsPerPage: pageSize,
       });
+    },
+    async handleStatusChange(status) {
+      await this.FETCH_ROOM_BY_STATUS(status);
+    },
+    async searchRoom(roomName) {
+      if (roomName === "") return await this.FETCH_ROOM();
+      await this.FETCH_ROOM_BY_NAME(roomName);
     },
   },
   async beforeRouteEnter(to, from, next) {
