@@ -1,4 +1,5 @@
 import {
+  DESECUPY_ROOM,
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
   LOGIN,
@@ -8,6 +9,7 @@ import { login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
 import {
+  desecupyRoom,
   fetchRooms,
   fetchRoomsByName,
   fetchRoomsByStatus,
@@ -98,6 +100,24 @@ export const actions = {
 
   [SAVE_ROOM](context, formdata) {
     return saveRoom(formdata)
+      .then((response) => {
+        showAlert({
+          type: "success",
+          title: "Sucesso",
+          message: "Efectuado com sucesso",
+        });
+        return response.data;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao guardar o quarto!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [DESECUPY_ROOM](context, roomId) {
+    return desecupyRoom(roomId)
       .then((response) => {
         showAlert({
           type: "success",

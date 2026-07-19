@@ -60,17 +60,30 @@
               />
             </td>
             <td class="p-4">{{ room.remaining }}</td>
-            <td class="p-4 gap-4">
-              <FontAwesomeIcon
-                icon="pen-to-square"
-                class="cursor-pointer"
-                @click="goTo({ name: 'editRoom', params: { id: index } })"
-              />
-              <FontAwesomeIcon
-                icon="ellipsis-vertical"
-                class="cursor-pointer mx-1"
-              />
-              <DropdownMenu dropdown-list=""
+            <td class="p-4">
+              <div class="relative inline-flex items-center gap-4">
+                <FontAwesomeIcon
+                  icon="pen-to-square"
+                  class="cursor-pointer"
+                  @click="goTo({ name: 'editRoom', params: { id: index } })"
+                />
+                <button
+                  type="button"
+                  class="mx-1 cursor-pointer"
+                  aria-label="Abrir ações do quarto"
+                  @mousedown.stop
+                  @click="toggleRoomMenu(room.id)"
+                >
+                  <FontAwesomeIcon icon="ellipsis-vertical" />
+                </button>
+                <DropdownMenu
+                  v-if="openRoomMenuId === room.id"
+                  :dropdown-list="roomsListingsDropdownlist"
+                  placement="bottom-end"
+                  @select="handleRoomMenuSelect($event, room)"
+                  @dismiss="openRoomMenuId = null"
+                />
+              </div>
             </td>
           </tr>
         </template>
@@ -93,6 +106,7 @@ import TextBadge from "@/components/shared/TextBadge.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { mapActions, mapMutations, mapState } from "vuex";
 import {
+  DESECUPY_ROOM,
   FETCH_ROOM,
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
@@ -102,9 +116,11 @@ import { getPaginationControls, paginate } from "@/helpers/Paginator";
 import TablePagination from "@/components/tables/TablePagination.vue";
 import store from "@/store";
 import DropdownMenu from "@/components/shared/DropdownMenu.vue";
+import { roomsListingsDropdownlist } from "@/datasources/datasourcess";
 
 export default {
   name: "RoomsListingView",
+  emits: ["room-menu-select"],
   components: {
     DropdownMenu,
     TablePagination,
@@ -137,10 +153,17 @@ export default {
     return {
       roomStatus: "",
       roomName: "",
+      openRoomMenuId: null,
+      roomsListingsDropdownlist,
     };
   },
   methods: {
-    ...mapActions([FETCH_ROOM, FETCH_ROOM_BY_STATUS, FETCH_ROOM_BY_NAME]),
+    ...mapActions([
+      FETCH_ROOM,
+      FETCH_ROOM_BY_STATUS,
+      FETCH_ROOM_BY_NAME,
+      DESECUPY_ROOM,
+    ]),
     ...mapMutations([SAVE_ROOM]),
     goTo(route) {
       return this.$router.push(route);
@@ -169,6 +192,14 @@ export default {
     async searchRoom(roomName) {
       if (roomName === "") return await this.FETCH_ROOM();
       await this.FETCH_ROOM_BY_NAME(roomName);
+    },
+    toggleRoomMenu(roomId) {
+      this.openRoomMenuId = this.openRoomMenuId === roomId ? null : roomId;
+    },
+    handleRoomMenuSelect(selection, room) {
+      this.openRoomMenuId = null;
+      if (selection.index === 1) this.DESECUPY_ROOM(room.id);
+      this.$emit("room-menu-select", { ...selection, room });
     },
   },
   async beforeRouteEnter(to, from, next) {

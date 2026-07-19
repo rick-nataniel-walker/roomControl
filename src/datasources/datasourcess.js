@@ -11,6 +11,8 @@ export const rooms = [
   },
 ];
 
-export const dropdownlist  = [
-  {drop}
-]
+export const roomsListingsDropdownlist = [
+  {
+    menuItems: ["Ocupar o quarto", "Desocupar o quarto"],
+  },
+];

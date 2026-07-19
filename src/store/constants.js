@@ -5,3 +5,4 @@ export const FETCH_ROOM = "FETCH_ROOM";
 export const FETCH_ROOM_BY_STATUS = "FETCH_ROOM_BY_STATUS";
 export const FETCH_ROOM_BY_NAME = "FETCH_ROOM_BY_NAME";
 export const SAVE_ROOM = "SAVE_ROOM";
+export const DESECUPY_ROOM = "DESECUPY_ROOM";

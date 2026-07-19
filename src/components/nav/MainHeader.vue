@@ -21,22 +21,33 @@
         />
       </label>
 
-      <button
-        class="profile-button"
-        type="button"
-        aria-label="Abrir perfil"
-        @click="$emit('profile-click')"
-      >
-        <span class="user-avatar">
-          <img v-if="avatar" :src="avatar" :alt="userName" />
-          <span v-else>{{ initials }}</span>
-        </span>
-        <span class="user-copy">
-          <strong>{{ userName }}</strong>
-          <small>{{ userRole }}</small>
-        </span>
-        <font-awesome-icon class="profile-chevron" icon="fa-chevron-down" />
-      </button>
+      <div class="profile-menu-anchor">
+        <button
+          class="profile-button"
+          type="button"
+          aria-label="Abrir perfil"
+          :aria-expanded="profileMenuOpen"
+          @mousedown.stop
+          @click="toggleProfileMenu"
+        >
+          <span class="user-avatar">
+            <img v-if="avatar" :src="avatar" :alt="userName" />
+            <span v-else>{{ initials }}</span>
+          </span>
+          <span class="user-copy">
+            <strong>{{ userName }}</strong>
+            <small>{{ userRole }}</small>
+          </span>
+          <font-awesome-icon class="profile-chevron" icon="fa-chevron-down" />
+        </button>
+        <DropdownMenu
+          v-if="profileMenuOpen"
+          :dropdown-list="profileDropdownList"
+          placement="bottom-end"
+          @select="handleProfileSelect"
+          @dismiss="profileMenuOpen = false"
+        />
+      </div>
     </div>
 
     <button
@@ -52,8 +63,11 @@
 </template>
 
 <script>
+import DropdownMenu from "@/components/shared/DropdownMenu.vue";
+
 export default {
   name: "MainHeader",
+  components: { DropdownMenu },
   props: {
     search: {
       type: String,
@@ -84,8 +98,15 @@ export default {
     "menu-toggle",
     "notification-click",
     "profile-click",
+    "profile-menu-select",
     "update:search",
   ],
+  data() {
+    return {
+      profileMenuOpen: false,
+      profileDropdownList: [{ menuItems: ["Perfil", "Sair"] }],
+    };
+  },
   computed: {
     initials() {
       return this.userName
@@ -94,6 +115,16 @@ export default {
         .slice(0, 2)
         .map((name) => name.charAt(0).toUpperCase())
         .join("");
+    },
+  },
+  methods: {
+    toggleProfileMenu() {
+      this.profileMenuOpen = !this.profileMenuOpen;
+      this.$emit("profile-click", this.profileMenuOpen);
+    },
+    handleProfileSelect(selection) {
+      this.profileMenuOpen = false;
+      this.$emit("profile-menu-select", selection);
     },
   },
 };
@@ -130,6 +161,10 @@ export default {
 
 .profile-button {
   @apply flex items-center gap-2.5 rounded-lg border-0 bg-transparent p-1.5 text-left text-primary transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-secondary/20;
+}
+
+.profile-menu-anchor {
+  @apply relative;
 }
 
 .user-avatar {

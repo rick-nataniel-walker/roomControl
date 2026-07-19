@@ -35,3 +35,9 @@ export const fetchRoomsByName = (name, { currentPage, itemsPerPage }) => {
     },
   });
 };
+
+export const desecupyRoom = (roomId) => {
+  return apiClient.get(`${uri}${roomId}/status/free`, {
+    headers: { "Content-Type": "application/json" },
+  });
+};
