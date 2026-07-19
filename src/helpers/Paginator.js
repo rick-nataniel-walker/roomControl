@@ -7,7 +7,10 @@
  * @param {number} options.itemsPerPage - Number of items per page
  * @returns {Object} - Pagination result containing paginated items and metadata
  */
-export function paginate(items, { currentPage = 1, itemsPerPage = 10 }) {
+export function paginate(
+  { length, currentPage = 1, itemsPerPage = 10 },
+  items = []
+) {
   // Validate inputs
   if (!Array.isArray(items)) {
     throw new Error("Items must be an array");
@@ -20,7 +23,7 @@ export function paginate(items, { currentPage = 1, itemsPerPage = 10 }) {
   if (isNaN(itemsPerPage)) itemsPerPage = 10;
 
   // Calculate pagination values
-  const totalItems = items.length;
+  const totalItems = length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   // Ensure currentPage is within valid range
@@ -32,7 +35,8 @@ export function paginate(items, { currentPage = 1, itemsPerPage = 10 }) {
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
   // Get paginated items
-  const paginatedItems = items.slice(startIndex, endIndex);
+  const paginatedItems =
+    items.length > 0 ? items.slice(startIndex, endIndex) : [];
 
   // Return pagination result
   return {

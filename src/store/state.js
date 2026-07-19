@@ -5,18 +5,14 @@ export const state = {
     roles: "",
   },
 
-  rooms: [
-    {
-      id: "",
-      name: "",
-      lockId: "",
-      status: "",
-      reservations: [],
-      ttLockAccesses: [],
-      tenant: "",
-      remaining: "0h:30min",
-    },
-  ],
+  rooms: {
+    data: [],
+    lastPage: true,
+    pageNumber: 0,
+    pageSize: 5,
+    totalElements: 0,
+    totalPages: 0,
+  },
   room: {
     id: "",
     name: "",

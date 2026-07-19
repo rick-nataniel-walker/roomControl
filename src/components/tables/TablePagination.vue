@@ -9,7 +9,7 @@
 
     <div class="pagination-controls flex items-center space-x-2">
       <button
-        @click="$emit('page-changed', pagination.currentPage - 1)"
+        @click="changePage(pagination.currentPage - 1)"
         :disabled="!pagination.hasPreviousPage"
         class="pagination-button"
         aria-label="Página anterior"
@@ -29,7 +29,7 @@
         <button
           v-for="page in pagination.pages"
           :key="page"
-          @click="$emit('page-changed', page)"
+          @click="changePage(page)"
           class="pagination-page-button"
           :class="{
             'pagination-page-button--active': page === pagination.currentPage,
@@ -49,7 +49,7 @@
       </div>
 
       <button
-        @click="$emit('page-changed', pagination.currentPage + 1)"
+        @click="changePage(pagination.currentPage + 1)"
         :disabled="!pagination.hasNextPage"
         class="pagination-button"
         aria-label="Próxima página"
@@ -91,8 +91,25 @@ export default {
     };
   },
   methods: {
+    changePage(page) {
+      if (
+        page < 1 ||
+        page > this.pagination.totalPages ||
+        page === this.pagination.currentPage
+      ) {
+        return;
+      }
+
+      this.$emit("change", {
+        page,
+        pageSize: this.pagination.itemsPerPage,
+      });
+    },
     handleItemsPerPageChange() {
-      this.$emit("items-per-page-changed", parseInt(this.localItemsPerPage));
+      this.$emit("change", {
+        page: 1,
+        pageSize: parseInt(this.localItemsPerPage),
+      });
     },
   },
   watch: {

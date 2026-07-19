@@ -1,9 +1,13 @@
 import { apiClient } from "@/api/apiClient";
 const uri = "/api/admin/rooms/";
 
-export const fetchRooms = () => {
+export const fetchRooms = ({ currentPage, itemsPerPage }) => {
   return apiClient.get(uri, {
     headers: { "Content-Type": "application/json" },
+    params: {
+      pageNumber: currentPage,
+      pageSize: itemsPerPage,
+    },
   });
 };
 export const saveRoom = (formData) => {

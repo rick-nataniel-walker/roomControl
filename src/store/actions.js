@@ -21,10 +21,16 @@ export const actions = {
       });
   },
 
-  [FETCH_ROOM](context) {
-    return fetchRooms()
+  [FETCH_ROOM](
+    context,
+    pagination = {
+      currentPage: 0,
+      itemsPerPage: 5,
+    }
+  ) {
+    return fetchRooms(pagination)
       .then((response) => {
-        context.commit(FETCH_ROOM, response.data.data);
+        context.commit(FETCH_ROOM, response.data);
         return response;
       })
       .catch((error) => {
