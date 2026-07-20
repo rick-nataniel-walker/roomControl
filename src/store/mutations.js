@@ -29,4 +29,8 @@ export const mutations = {
       remaining: "00h:00min",
     };
   },
+
+  FETCH_RESERVATIONS(state, payload) {
+    state.reservations = payload;
+  },
 };

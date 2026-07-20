@@ -16,3 +16,8 @@ export const roomsListingsDropdownlist = [
     menuItems: ["Ocupar o quarto", "Desocupar o quarto"],
   },
 ];
+export const reservationsListingsDropdownlist = [
+  {
+    menuItems: ["Efectuar o Pagamento", "Checkout", "Extender o período"],
+  },
+];

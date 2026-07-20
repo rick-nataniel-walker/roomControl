@@ -47,7 +47,7 @@
         </template>
         <template #body>
           <tr
-            class="my-1 border-b border-gray-200"
+            class="my-1 border-b border-gray-200 text-sm"
             v-for="(room, index) in rooms.data"
             :key="room.id"
           >

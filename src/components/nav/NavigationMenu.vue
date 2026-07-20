@@ -11,24 +11,36 @@ export default {
     return {
       navyLogo,
       menuItems: [
-        { label: "Dashboard", icon: "home", route: { name: "dashboard" } },
-        { label: "Quartos", icon: "bed", route: { name: "rooms" } },
+        {
+          label: "Dashboard",
+          icon: "home",
+          route: { name: "dashboard" },
+          activeMenu: "dashboard",
+        },
+        {
+          label: "Quartos",
+          icon: "bed",
+          route: { name: "rooms" },
+          activeMenu: "rooms",
+        },
         {
           label: "Reservas",
           icon: "money-check",
           route: { name: "reservations" },
+          activeMenu: "reservations",
         },
         {
           label: "Relatórios",
           icon: "chart-line",
           route: { name: "reports" },
+          activeMenu: "reports",
         },
       ],
     };
   },
   methods: {
-    isActive(route) {
-      return this.$route.name === route;
+    isActive(activeMenu) {
+      return this.$route.meta.activeMenu === activeMenu;
     },
     navigateTo(route) {
       this.$router.push(route);
@@ -53,7 +65,7 @@ export default {
       :label="menuItem.label"
       :icon="menuItem.icon"
       class="my-2"
-      :active="isActive(menuItem.route.name)"
+      :active="isActive(menuItem.activeMenu)"
     />
   </div>
 </template>

@@ -8,7 +8,7 @@ module.exports = {
         "primary-light": "rgba(0, 53, 26, 0.15)",
         secondary: "#1E3ABA",
         "secondary-light": "rgba(0, 161, 78, 0.15)",
-        accent: "#1E3ABAFF",
+        accent: "#2E4DDD",
         "accent-light": "rgba(30, 58, 186, 0.15)",
         light: "#ffffff",
         dark: "#171717",

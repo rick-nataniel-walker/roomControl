@@ -50,20 +50,20 @@ export default {
 }
 
 .action-btn--action {
-  @apply bg-secondary text-white;
+  @apply bg-secondary text-light;
 }
 
 .action-btn--action:hover:not(:disabled) {
-  @apply -translate-y-0.5 bg-primary shadow-lg;
+  @apply -translate-y-0.5 bg-accent shadow-lg;
   box-shadow: 0 8px 20px rgba(13, 27, 61, 0.22);
 }
 
 .action-btn--cancel {
-  @apply bg-white text-primary;
+  @apply bg-light  border border-secondary text-secondary;
 }
 
 .action-btn--cancel:hover:not(:disabled) {
-  @apply -translate-y-0.5 bg-lightgray shadow-md;
+  @apply -translate-y-0.5 bg-secondary text-light shadow-md;
 }
 
 .action-btn--delete {

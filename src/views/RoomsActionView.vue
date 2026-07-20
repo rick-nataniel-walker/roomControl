@@ -11,7 +11,7 @@ export default {
   name: "RoomsActionView",
   components: { ActionBtn, FileInput, ContentCard, ContentWrapper, FormGroup },
   computed: {
-    ...mapState(["room", "rooms"]),
+    ...mapState(["room", "rooms", "systemConfig"]),
   },
   data() {
     return {
@@ -47,13 +47,33 @@ export default {
   <ContentWrapper title="Novo Quarto">
     <template #body>
       <content-card title="adicionar um quarto" :styled="false">
-        <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="grid grid-cols-2 items-center gap-4 text-sm">
           <span>Designação do quarto</span>
           <FormGroup label="" required v-model="this.room.name" />
         </div>
-        <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="grid grid-cols-2 items-center gap-4 text-sm">
           <span>Código da fechadura</span>
           <FormGroup label="" required v-model="this.room.lockId" />
+        </div>
+        <div
+          class="grid grid-cols-2 items-center gap-4 text-sm"
+          v-if="this.$route.params.id"
+        >
+          <span>Status</span>
+          <FormGroup
+            label=""
+            required
+            v-model="this.room.status"
+            input-type="select"
+          >
+            <option
+              v-for="roomStatus in Object.keys(systemConfig.roomStatues)"
+              :key="roomStatus"
+              :value="roomStatus"
+            >
+              {{ systemConfig.roomStatues[roomStatus] }}
+            </option>
+          </FormGroup>
         </div>
         <FileInput
           name="roomImg"
@@ -63,7 +83,12 @@ export default {
           preview
         />
         <div class="flex justify-end gap-4">
-          <ActionBtn text="Cancelar" v-if="this.room.id" variant="cancel" />
+          <ActionBtn
+            text="Cancelar"
+            v-if="this.room.id"
+            variant="cancel"
+            @click="goTo({ name: rooms })"
+          />
           <ActionBtn text="Guardar o quarto" icon="save" @click="saveRoom" />
         </div>
       </content-card>

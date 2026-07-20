@@ -24,12 +24,37 @@ export const state = {
     image: "",
     remaining: "00h:00min",
   },
+  reservations: {
+    data: [],
+    lastPage: true,
+    pageNumber: 0,
+    pageSize: 5,
+    totalElements: 0,
+    totalPages: 0,
+  },
+  reservation: {
+    id: null,
+    checkinTime: "",
+    checkoutTime: "",
+    durationHours: null,
+    paymentMethod: "",
+    paymentConfirm: null,
+    checkedOut: null,
+    status: "",
+    roomName: "",
+  },
   systemConfig: {
     roomStatues: {
       free: "Desocupado",
       busy: "Ocupado",
       maintenance: "Em manutenção",
       cleaning: "Em limpeza",
+    },
+    reservationStatues: {
+      pago: "Pago",
+      pendente: "Pendente",
+      cancelado: "Cancelado",
+      falhado: "Falhado",
     },
   },
 };

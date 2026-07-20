@@ -1,5 +1,6 @@
 import {
   DESECUPY_ROOM,
+  FETCH_RESERVATIONS,
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
   LOGIN,
@@ -15,6 +16,7 @@ import {
   fetchRoomsByStatus,
   saveRoom,
 } from "@/api/rooms";
+import { fetchReservations } from "@/api/reservations";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -129,9 +131,32 @@ export const actions = {
       .catch((error) => {
         showAlert({
           type: "error",
-          title: "Erro ao guardar o quarto!",
+          title: "Erro ao actualizar o quarto!",
           message: error.response.data.message,
         });
+      });
+  },
+
+  [FETCH_RESERVATIONS](
+    context,
+    pagination = {
+      currentPage: 0,
+      itemsPerPage: 5,
+    }
+  ) {
+    return fetchReservations(pagination)
+      .then((response) => {
+        context.commit(FETCH_RESERVATIONS, response.data);
+        return response;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível reservas!",
+          message: error.response.data.message,
+        });
+
+        throw error;
       });
   },
 };

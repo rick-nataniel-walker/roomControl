@@ -4,6 +4,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import store from "@/store";
 import RoomsListingView from "@/views/RoomsListingView.vue";
 import RoomsActionView from "@/views/RoomsActionView.vue";
+import ReservationView from "@/views/ReservationView.vue";
 
 const routes = [
   {
@@ -16,11 +17,11 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeMenu: "dashboard" },
   },
   {
     path: "/rooms",
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeMenu: "rooms" },
     children: [
       {
         path: "",
@@ -39,6 +40,12 @@ const routes = [
         props: true,
       },
     ],
+  },
+  {
+    path: "/reservations",
+    name: "reservations",
+    component: ReservationView,
+    meta: { requiresAuth: true, activeMenu: "reservations" },
   },
 ];
 
