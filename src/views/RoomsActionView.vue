@@ -46,7 +46,7 @@ export default {
 <template>
   <ContentWrapper title="Novo Quarto">
     <template #body>
-      <content-card title="adicionar um quarto" :styled="false">
+      <content-card title="adicionar um quarto" styled="none">
         <div class="grid grid-cols-2 items-center gap-4 text-sm">
           <span>Designação do quarto</span>
           <FormGroup label="" required v-model="this.room.name" />

@@ -5,6 +5,7 @@ import store from "@/store";
 import RoomsListingView from "@/views/RoomsListingView.vue";
 import RoomsActionView from "@/views/RoomsActionView.vue";
 import ReservationView from "@/views/ReservationView.vue";
+import ReservationsActionView from "@/views/ReservationsActionView.vue";
 
 const routes = [
   {
@@ -43,9 +44,24 @@ const routes = [
   },
   {
     path: "/reservations",
-    name: "reservations",
-    component: ReservationView,
     meta: { requiresAuth: true, activeMenu: "reservations" },
+    children: [
+      {
+        path: "",
+        name: "reservations",
+        component: ReservationView,
+      },
+      {
+        path: "new",
+        name: "newReservation",
+        component: ReservationsActionView,
+      },
+      {
+        path: ":id",
+        name: "editReservation",
+        component: ReservationsActionView,
+      },
+    ],
   },
 ];
 

@@ -3,7 +3,14 @@ export default {
   name: "ContentCard",
   props: {
     title: { type: String, required: true },
-    styled: { type: Boolean, required: false, default: true },
+    styled: {
+      type: String,
+      required: false,
+      default: "styled",
+      validator: (value) => {
+        return ["styled", "none"].includes(value);
+      },
+    },
   },
 };
 </script>
@@ -17,12 +24,9 @@ export default {
 
 <style scoped>
 .card {
-  @apply min-h-96 w-full rounded-lg border-slate-200/80 p-4 transition duration-200 shadow-card text-left tablet:w-1/2;
-}
-.card {
-  @apply border-slate-300 shadow-card-hover;
+  @apply min-h-96 w-full rounded-lg border border-gray-300 p-4 text-left tablet:w-1/2;
 }
 .styled {
-  @apply bg-white;
+  @apply bg-light transition duration-200 shadow-card-hover;
 }
 </style>

@@ -10,3 +10,7 @@ export const fetchReservations = ({ currentPage, itemsPerPage }) => {
     },
   });
 };
+
+export const saveReservation = (formdata) => {
+  return apiClient.post(`${uri}new`, formdata);
+};

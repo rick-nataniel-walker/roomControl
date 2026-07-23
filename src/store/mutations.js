@@ -33,4 +33,20 @@ export const mutations = {
   FETCH_RESERVATIONS(state, payload) {
     state.reservations = payload;
   },
+
+  resetReservation(state) {
+    state.reservation = {
+      id: null,
+      checkinTime: "",
+      checkoutTime: "",
+      durationHours: null,
+      paymentMethod: "",
+      paymentConfirm: null,
+      checkedOut: null,
+      status: "",
+      roomName: "",
+      roomId: "",
+      cardNumber: "",
+    };
+  },
 };

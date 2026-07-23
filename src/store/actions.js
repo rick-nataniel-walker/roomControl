@@ -4,6 +4,7 @@ import {
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
   LOGIN,
+  SAVE_RESERVATIONS,
   SAVE_ROOM,
 } from "@/store/constants";
 import { login } from "@/api/auth";
@@ -16,7 +17,7 @@ import {
   fetchRoomsByStatus,
   saveRoom,
 } from "@/api/rooms";
-import { fetchReservations } from "@/api/reservations";
+import { fetchReservations, saveReservation } from "@/api/reservations";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -157,6 +158,25 @@ export const actions = {
         });
 
         throw error;
+      });
+  },
+
+  [SAVE_RESERVATIONS](context, formdata) {
+    return saveReservation(formdata)
+      .then((response) => {
+        showAlert({
+          type: "success",
+          title: "Sucesso",
+          message: "Efectuado com sucesso",
+        });
+        return response.data;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao criar pedido!",
+          message: error.response.data.message,
+        });
       });
   },
 };
