@@ -58,6 +58,12 @@ export const state = {
       cancelado: "Cancelado",
       falhado: "Falhado",
     },
+    paymentMethods: {
+      physical: "FÍSICO",
+      mpesa: "MPESA",
+      emola: "EMOLA",
+      creditCard: "CARTÃO",
+    },
     durationHours: ["1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12"],
   },
 };

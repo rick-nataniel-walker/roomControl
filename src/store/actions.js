@@ -1,10 +1,11 @@
 import {
+  CONFIRM_RESERVATION,
   DESECUPY_ROOM,
   FETCH_RESERVATIONS,
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
   LOGIN,
-  SAVE_RESERVATIONS,
+  SAVE_RESERVATION,
   SAVE_ROOM,
 } from "@/store/constants";
 import { login } from "@/api/auth";
@@ -17,7 +18,11 @@ import {
   fetchRoomsByStatus,
   saveRoom,
 } from "@/api/rooms";
-import { fetchReservations, saveReservation } from "@/api/reservations";
+import {
+  confirmReservation,
+  fetchReservations,
+  saveReservation,
+} from "@/api/reservations";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -161,8 +166,32 @@ export const actions = {
       });
   },
 
-  [SAVE_RESERVATIONS](context, formdata) {
+  [SAVE_RESERVATION](context, formdata) {
     return saveReservation(formdata)
+      .then((response) => {
+        let localReservations =
+          JSON.parse(localStorage.getItem("reservations")) ?? [];
+        formdata.id = response.data.id;
+        formdata.status = response.data.status;
+        localReservations.push(formdata);
+        localStorage.setItem("reservations", JSON.stringify(localReservations));
+        showAlert({
+          type: "success",
+          title: "Sucesso",
+          message: "Efectuado com sucesso",
+        });
+        return response.data;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao criar pedido!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [CONFIRM_RESERVATION](context, { id, formdata }) {
+    return confirmReservation(id, formdata)
       .then((response) => {
         showAlert({
           type: "success",

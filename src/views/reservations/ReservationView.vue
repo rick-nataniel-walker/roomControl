@@ -52,7 +52,7 @@
         <template #body>
           <tr
             class="my-1 border-b border-gray-200 text-sm"
-            v-for="reservation in reservations.data"
+            v-for="(reservation, index) in reservations.data"
             :key="reservation.id"
           >
             <td class="p-4">{{ reservation.id }}</td>
@@ -88,7 +88,9 @@
                 <FontAwesomeIcon
                   icon="pen-to-square"
                   class="cursor-pointer"
-                  @click="goTo({ name: 'editRoom', params: { id: index } })"
+                  @click="
+                    goTo({ name: 'editReservation', params: { id: index } })
+                  "
                 />
                 <button
                   type="button"
@@ -103,7 +105,7 @@
                   v-if="openReservationMenuId === reservation.id"
                   :dropdown-list="reservationsListingsDropdownlist"
                   placement="bottom-end"
-                  @select="handleMenuSelect($event, reservation)"
+                  @select="handleMenuSelect($event, reservation, index)"
                   @dismiss="openReservationMenuId = null"
                 />
               </div>
@@ -206,10 +208,16 @@ export default {
       this.openReservationMenuId =
         this.openReservationMenuId === reservationId ? null : reservationId;
     },
-    handleMenuSelect(selection, room) {
+    handleMenuSelect(selection, reservation, reservationIndex) {
       this.openReservationMenuId = null;
-      if (selection.index === 1) this.DESECUPY_ROOM(room.id);
-      this.$emit("room-menu-select", { ...selection, room });
+      if (selection.index === 0)
+        this.goTo({
+          name: "confirmReservation",
+          params: { id: reservationIndex },
+        });
+      if (selection.index === 1) this.DESECUPY_ROOM(reservation.id);
+
+      this.$emit("reservation-menu-select", { ...selection, reservation });
     },
     async handlePaginationChange({ page, pageSize }) {
       await this.FETCH_RESERVATIONS({

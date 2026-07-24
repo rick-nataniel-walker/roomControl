@@ -14,3 +14,7 @@ export const fetchReservations = ({ currentPage, itemsPerPage }) => {
 export const saveReservation = (formdata) => {
   return apiClient.post(`${uri}new`, formdata);
 };
+
+export const confirmReservation = (id, formdata) => {
+  return apiClient.put(`${uri}${id}/confirm-payment/manual`, formdata);
+};

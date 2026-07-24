@@ -2,10 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import store from "@/store";
-import RoomsListingView from "@/views/RoomsListingView.vue";
-import RoomsActionView from "@/views/RoomsActionView.vue";
-import ReservationView from "@/views/ReservationView.vue";
-import ReservationsActionView from "@/views/ReservationsActionView.vue";
+import RoomsListingView from "@/views/rooms/RoomsListingView.vue";
+import RoomsActionView from "@/views/rooms/RoomsActionView.vue";
+import ReservationView from "@/views/reservations/ReservationView.vue";
+import ReservationsActionView from "@/views/reservations/ReservationsActionView.vue";
+import ReservationsPaymentConfrimationView from "@/views/reservations/ReservationsPaymentConfrimationView.vue";
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
         path: ":id",
         name: "editReservation",
         component: ReservationsActionView,
+      },
+      {
+        path: ":id/confirm-payment",
+        name: "confirmReservation",
+        component: ReservationsPaymentConfrimationView,
       },
     ],
   },

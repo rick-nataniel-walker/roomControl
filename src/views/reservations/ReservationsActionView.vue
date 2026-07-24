@@ -10,6 +10,7 @@
               required
               v-model="reservation.roomId"
               input-type="select"
+              @update:model-value="getRoom"
             >
               <option
                 v-for="room in rooms.data"
@@ -89,7 +90,8 @@ import FormGroup from "@/components/form/FormGroup.vue";
 import ActionBtn from "@/components/shared/ActionBtn.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { formatDateTime } from "@/helpers/DateHelper";
-import { FETCH_ROOM_BY_STATUS, SAVE_RESERVATIONS } from "@/store/constants";
+import { getItemByField } from "@/helpers/GeneralHelper";
+import { FETCH_ROOM_BY_STATUS, SAVE_RESERVATION } from "@/store/constants";
 import store from "@/store";
 //import store from "@/store";
 //import { FETCH_ROOM_BY_STATUS } from "@/store/constants";
@@ -117,9 +119,9 @@ export default {
   },
   methods: {
     ...mapMutations(["resetReservation"]),
-    ...mapActions([FETCH_ROOM_BY_STATUS, SAVE_RESERVATIONS]),
+    ...mapActions([FETCH_ROOM_BY_STATUS, SAVE_RESERVATION]),
     async saveReservation() {
-      this.savedReservation = await this.SAVE_RESERVATIONS(this.reservation);
+      this.savedReservation = await this.SAVE_RESERVATION(this.reservation);
       if (this.savedReservation) {
         this.savedReservation = null;
         this.resetReservation();
@@ -164,10 +166,17 @@ export default {
     goTo(route) {
       this.$router.push(route);
     },
+    getRoom(roomId) {
+      const room = getItemByField(this.rooms.data, roomId);
+
+      this.reservation.roomName = room?.name ?? "";
+      return room ?? null;
+    },
   },
 
   async beforeRouteEnter(to, from, next) {
     try {
+      store.commit("resetReservation");
       await store.dispatch(FETCH_ROOM_BY_STATUS, "free");
       next();
     } catch (error) {

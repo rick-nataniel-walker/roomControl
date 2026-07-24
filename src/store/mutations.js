@@ -34,6 +34,10 @@ export const mutations = {
     state.reservations = payload;
   },
 
+  setReservation(state, payload) {
+    state.reservation = { ...payload };
+  },
+
   resetReservation(state) {
     state.reservation = {
       id: null,
