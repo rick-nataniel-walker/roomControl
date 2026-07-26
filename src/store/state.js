@@ -1,4 +1,6 @@
 export const state = {
+  pendingRequests: 0,
+
   authenticationData: {
     username: "",
     jwtToken: "",

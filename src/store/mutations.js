@@ -1,7 +1,20 @@
-import { LOGIN, SAVE_ROOM } from "@/store/constants";
+import {
+  LOGIN,
+  SAVE_ROOM,
+  START_LOADING,
+  STOP_LOADING,
+} from "@/store/constants";
 import { FETCH_ROOM } from "@/store/constants";
 
 export const mutations = {
+  [START_LOADING](state) {
+    state.pendingRequests += 1;
+  },
+
+  [STOP_LOADING](state) {
+    state.pendingRequests = Math.max(0, state.pendingRequests - 1);
+  },
+
   [LOGIN](state, payload) {
     state.authenticationData.username = payload.username;
     let saltedToken = payload.jwtToken.split(";")[0];

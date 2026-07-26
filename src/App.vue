@@ -1,6 +1,21 @@
 <template>
+  <MainSpinner :active="isLoading" text="A carregar..." />
   <router-view />
 </template>
+
+<script>
+import MainSpinner from "@/components/shared/MainSpinner.vue";
+
+export default {
+  name: "App",
+  components: { MainSpinner },
+  computed: {
+    isLoading() {
+      return this.$store.state.pendingRequests > 0;
+    },
+  },
+};
+</script>
 
 <style>
 #app {
