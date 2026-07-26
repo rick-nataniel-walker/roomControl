@@ -1,4 +1,5 @@
 import {
+  CHECKOUT_RESERVATION,
   CONFIRM_RESERVATION,
   DESECUPY_ROOM,
   FETCH_RESERVATIONS,
@@ -19,6 +20,7 @@ import {
   saveRoom,
 } from "@/api/rooms";
 import {
+  checkoutReservation,
   confirmReservation,
   fetchReservations,
   saveReservation,
@@ -201,6 +203,25 @@ export const actions = {
         return response.data;
       })
       .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao criar pedido!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [CHECKOUT_RESERVATION](context, id) {
+    return checkoutReservation(id)
+      .then((response) => {
+        showAlert({
+          type: "success",
+          title: "Sucesso",
+          message: "Efectuado com sucesso!",
+        });
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
         showAlert({
           type: "error",
           title: "Erro ao criar pedido!",

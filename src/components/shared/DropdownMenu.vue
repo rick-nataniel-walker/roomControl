@@ -17,7 +17,7 @@
         <button
           type="button"
           role="menuitem"
-          @click="handleClick(item, itemIndex)"
+          @click="handleClick(item, itemIndex, $event)"
         >
           {{ item }}
         </button>
@@ -48,8 +48,8 @@ export default {
     document.removeEventListener("mousedown", this.handleOutsideClick);
   },
   methods: {
-    handleClick(item, index) {
-      this.$emit("select", { index, item });
+    handleClick(item, index, event) {
+      this.$emit("select", { index, item, event });
     },
     handleOutsideClick(event) {
       if (!this.$el.contains(event.target)) {

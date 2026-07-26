@@ -18,3 +18,7 @@ export const saveReservation = (formdata) => {
 export const confirmReservation = (id, formdata) => {
   return apiClient.put(`${uri}${id}/confirm-payment/manual`, formdata);
 };
+
+export const checkoutReservation = (id) => {
+  return apiClient.put(`${uri}${id}/checkout`);
+};

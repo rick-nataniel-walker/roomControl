@@ -25,16 +25,17 @@ export default {
       this.roomCopy = await this.SAVE_ROOM(this.room);
       if (this.roomCopy) {
         this.roomCopy = null;
-        this.resetRoom();
         this.goTo({ name: "rooms" });
       }
     },
     goTo(route) {
       this.$router.push(route);
+      this.resetRoom();
     },
   },
   beforeMount() {
     this.roomCopy = null;
+    this.resetRoom();
     if (this.$route.params.id) {
       this.$store.state.room = { ...this.rooms.data[this.$route.params.id] };
       if (!this.room.id) this.goTo({ name: "rooms" });
@@ -87,7 +88,7 @@ export default {
             text="Cancelar"
             v-if="this.room.id"
             variant="cancel"
-            @click="goTo({ name: rooms })"
+            @click="goTo({ name: 'rooms' })"
           />
           <ActionBtn text="Guardar o quarto" icon="save" @click="saveRoom" />
         </div>

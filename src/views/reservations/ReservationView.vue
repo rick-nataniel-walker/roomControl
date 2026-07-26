@@ -118,6 +118,27 @@
         :pagination="paginationControls"
         @change="handlePaginationChange"
       />
+
+      <PopUp
+        ref="checkoutPopup"
+        v-model="isCheckoutPopupOpen"
+        title="Fazer checkout"
+        width="small"
+        type="interact"
+        action-msg="Confirmar checkout"
+        @confirm="confirmCheckout"
+        @cancel="clearPendingCheckout"
+        @close="clearPendingCheckout"
+      >
+        <template #body>
+          <p v-if="pendingCheckoutReservation">
+            Deseja mesmo fazer o checkout da reserva
+            <strong>#{{ pendingCheckoutReservation.id }}</strong>
+            do quarto
+            {{ pendingCheckoutReservation.roomName }}?
+          </p>
+        </template>
+      </PopUp>
     </template>
   </ContentWrapper>
 </template>
@@ -128,7 +149,7 @@ import ActionBtn from "@/components/shared/ActionBtn.vue";
 import MainTable from "@/components/tables/MainTable.vue";
 import DropdownMenu from "@/components/shared/DropdownMenu.vue";
 import { mapActions, mapState } from "vuex";
-import { FETCH_RESERVATIONS } from "@/store/constants";
+import { CHECKOUT_RESERVATION, FETCH_RESERVATIONS } from "@/store/constants";
 import store from "@/store";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { reservationsListingsDropdownlist } from "@/datasources/datasourcess";
@@ -137,10 +158,12 @@ import { javaDateTimeFormatter } from "@/helpers/DateHelper";
 import TablePagination from "@/components/tables/TablePagination.vue";
 import { getPaginationControls, paginate } from "@/helpers/Paginator";
 import TextBadge from "@/components/shared/TextBadge.vue";
+import PopUp from "@/components/shared/PopUp.vue";
 
 export default {
   name: "ReservationView",
   components: {
+    PopUp,
     TextBadge,
     TablePagination,
     FormGroup,
@@ -171,12 +194,14 @@ export default {
     return {
       reservationsListingsDropdownlist,
       openReservationMenuId: null,
+      isCheckoutPopupOpen: false,
+      pendingCheckoutReservation: null,
       roomName: null,
       reservationStatus: null,
     };
   },
   methods: {
-    ...mapActions([FETCH_RESERVATIONS]),
+    ...mapActions([FETCH_RESERVATIONS, CHECKOUT_RESERVATION]),
     goTo(route) {
       this.$router.push(route);
     },
@@ -210,14 +235,31 @@ export default {
     },
     handleMenuSelect(selection, reservation, reservationIndex) {
       this.openReservationMenuId = null;
-      if (selection.index === 0)
+      if (selection.index === 0) {
         this.goTo({
           name: "confirmReservation",
           params: { id: reservationIndex },
         });
-      if (selection.index === 1) this.DESECUPY_ROOM(reservation.id);
+      }
+
+      if (selection.index === 1) {
+        this.pendingCheckoutReservation = reservation;
+        this.$refs.checkoutPopup.openPopup(selection.event);
+        return;
+      }
 
       this.$emit("reservation-menu-select", { ...selection, reservation });
+    },
+    async confirmCheckout() {
+      if (!this.pendingCheckoutReservation) return;
+
+      await this.CHECKOUT_RESERVATION(this.pendingCheckoutReservation.id);
+      this.isCheckoutPopupOpen = false;
+      this.pendingCheckoutReservation = null;
+      await this.FETCH_RESERVATIONS();
+    },
+    clearPendingCheckout() {
+      this.pendingCheckoutReservation = null;
     },
     async handlePaginationChange({ page, pageSize }) {
       await this.FETCH_RESERVATIONS({
