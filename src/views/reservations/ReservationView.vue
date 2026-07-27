@@ -149,7 +149,11 @@ import ActionBtn from "@/components/shared/ActionBtn.vue";
 import MainTable from "@/components/tables/MainTable.vue";
 import DropdownMenu from "@/components/shared/DropdownMenu.vue";
 import { mapActions, mapState } from "vuex";
-import { CHECKOUT_RESERVATION, FETCH_RESERVATIONS } from "@/store/constants";
+import {
+  CHECKOUT_RESERVATION,
+  FETCH_RESERVATIONS_BY_ROOM_NAME,
+  FETCH_RESERVATIONS,
+} from "@/store/constants";
 import store from "@/store";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { reservationsListingsDropdownlist } from "@/datasources/datasourcess";
@@ -201,7 +205,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions([FETCH_RESERVATIONS, CHECKOUT_RESERVATION]),
+    ...mapActions([
+      FETCH_RESERVATIONS,
+      FETCH_RESERVATIONS_BY_ROOM_NAME,
+      CHECKOUT_RESERVATION,
+    ]),
     goTo(route) {
       this.$router.push(route);
     },
@@ -209,8 +217,10 @@ export default {
       return javaDateTimeFormatter(datetime);
     },
 
-    searchReservation(room) {
-      console.log(room);
+    async searchReservation() {
+      if (this.roomName && this.roomName !== "")
+        await this.FETCH_RESERVATIONS_BY_ROOM_NAME(this.roomName);
+      else await this.FETCH_RESERVATIONS();
     },
 
     mapStatus(status) {

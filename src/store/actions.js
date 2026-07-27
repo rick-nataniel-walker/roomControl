@@ -2,6 +2,7 @@ import {
   CHECKOUT_RESERVATION,
   CONFIRM_RESERVATION,
   DESECUPY_ROOM,
+  FETCH_RESERVATIONS_BY_ROOM_NAME,
   FETCH_RESERVATIONS,
   FETCH_ROOM_BY_NAME,
   FETCH_ROOM_BY_STATUS,
@@ -23,6 +24,7 @@ import {
   checkoutReservation,
   confirmReservation,
   fetchReservations,
+  fetchReservationsByRoomName,
   saveReservation,
 } from "@/api/reservations";
 
@@ -160,7 +162,30 @@ export const actions = {
       .catch((error) => {
         showAlert({
           type: "error",
-          title: "Não foi possível reservas!",
+          title: "Não foi possível buscar reservas!",
+          message: error.response.data.message,
+        });
+
+        throw error;
+      });
+  },
+  [FETCH_RESERVATIONS_BY_ROOM_NAME](
+    context,
+    roomName,
+    pagination = {
+      currentPage: 0,
+      itemsPerPage: 5,
+    }
+  ) {
+    return fetchReservationsByRoomName(roomName, pagination)
+      .then((response) => {
+        context.commit(FETCH_RESERVATIONS, response.data);
+        return response;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível buscar reservas!",
           message: error.response.data.message,
         });
 

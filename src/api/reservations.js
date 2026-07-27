@@ -11,6 +11,16 @@ export const fetchReservations = ({ currentPage, itemsPerPage }) => {
   });
 };
 
+export const fetchReservationsByRoomName = (roomName, pagination) => {
+  return apiClient.get(`${uri}search/roomname/${roomName}`, {
+    headers: { "Content-Type": "application/json" },
+    params: {
+      pageNumber: pagination.currentPage,
+      pageSize: pagination.pageSize,
+    },
+  });
+};
+
 export const saveReservation = (formdata) => {
   return apiClient.post(`${uri}new`, formdata);
 };
