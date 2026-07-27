@@ -13,11 +13,18 @@ export const rooms = [
 
 export const roomsListingsDropdownlist = [
   {
-    menuItems: ["Ocupar o quarto", "Desocupar o quarto"],
+    menuItems: [
+      { id: "occupy", name: "Ocupar o quarto", disabled: false },
+      { id: "fee", name: "Desocupar o quarto", disabled: false },
+    ],
   },
 ];
 export const reservationsListingsDropdownlist = [
   {
-    menuItems: ["Efectuar o Pagamento", "Checkout", "Extender o período"],
+    menuItems: [
+      { id: "payment", name: "Efectuar o Pagamento", disabled: false },
+      { id: "checkout", name: "Checkout", disabled: false },
+      { id: "extend", name: "Extender o período", disabled: false },
+    ],
   },
 ];

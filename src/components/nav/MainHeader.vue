@@ -104,7 +104,14 @@ export default {
   data() {
     return {
       profileMenuOpen: false,
-      profileDropdownList: [{ menuItems: ["Perfil", "Sair"] }],
+      profileDropdownList: [
+        {
+          menuItems: [
+            { id: "profile", name: "Perfil", disabled: false },
+            { id: "logout", name: "Sair", disabled: false },
+          ],
+        },
+      ],
     };
   },
   computed: {

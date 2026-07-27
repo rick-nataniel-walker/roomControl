@@ -103,7 +103,7 @@
                 </button>
                 <DropdownMenu
                   v-if="openReservationMenuId === reservation.id"
-                  :dropdown-list="reservationsListingsDropdownlist"
+                  :dropdown-list="configureDropdownList(reservation)"
                   placement="bottom-end"
                   @select="handleMenuSelect($event, reservation, index)"
                   @dismiss="openReservationMenuId = null"
@@ -226,6 +226,34 @@ export default {
       }
     },
 
+    configureDropdownList(reservation) {
+      return this.reservationsListingsDropdownlist.map((group) => ({
+        ...group,
+        menuItems: group.menuItems.map((item) => {
+          let disabled = item.disabled;
+
+          if (item.id === "payment") {
+            disabled = reservation.paymentConfirm;
+          }
+
+          if (item.id === "checkout") {
+            disabled =
+              reservation.checkedOut === true ||
+              reservation.paymentConfirm === false;
+          }
+
+          if (item.id === "extend") {
+            disabled = reservation.checkedOut;
+          }
+
+          return {
+            ...item,
+            disabled: Boolean(disabled),
+          };
+        }),
+      }));
+    },
+
     handleStatusChange() {
       console.log("changes");
     },
@@ -235,14 +263,14 @@ export default {
     },
     handleMenuSelect(selection, reservation, reservationIndex) {
       this.openReservationMenuId = null;
-      if (selection.index === 0) {
+      if (selection.id === "payment") {
         this.goTo({
           name: "confirmReservation",
           params: { id: reservationIndex },
         });
       }
 
-      if (selection.index === 1) {
+      if (selection.id === "checkout") {
         this.pendingCheckoutReservation = reservation;
         this.$refs.checkoutPopup.openPopup(selection.event);
         return;

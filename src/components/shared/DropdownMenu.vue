@@ -17,9 +17,10 @@
         <button
           type="button"
           role="menuitem"
+          :disabled="item.disabled"
           @click="handleClick(item, itemIndex, $event)"
         >
-          {{ item }}
+          {{ item.name }}
         </button>
       </li>
     </ul>
@@ -49,7 +50,7 @@ export default {
   },
   methods: {
     handleClick(item, index, event) {
-      this.$emit("select", { index, item, event });
+      this.$emit("select", { ...item, index, event });
     },
     handleOutsideClick(event) {
       if (!this.$el.contains(event.target)) {
@@ -79,6 +80,12 @@ export default {
   @apply bg-white;
 }
 .dropdown-item button {
-  @apply block w-full whitespace-nowrap px-4 py-2 text-left hover:bg-accent hover:text-light;
+  @apply block w-full whitespace-nowrap px-4 py-2 text-left;
+}
+.dropdown-item button:not(:disabled):hover {
+  @apply bg-accent text-light;
+}
+.dropdown-item button:disabled {
+  @apply cursor-not-allowed bg-slate-50 text-slate-400 opacity-60;
 }
 </style>
