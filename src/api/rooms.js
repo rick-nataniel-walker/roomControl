@@ -12,8 +12,9 @@ export const fetchRooms = ({ currentPage, itemsPerPage }) => {
 };
 export const saveRoom = (formData) => {
   const headers = { "Content-Type": "multipart/form-data" };
-  return formData.id
-    ? apiClient.put(`${uri}${formData.id}`, formData, {
+  let id = formData.get("id");
+  return id !== undefined && id !== ""
+    ? apiClient.put(`${uri}${id}`, formData, {
         headers,
       })
     : apiClient.post(uri, formData, {

@@ -10,6 +10,7 @@
         :id="previewId"
         class="file-preview__image"
         :alt="`Pré-visualização de ${label}`"
+        :src="src"
       />
     </div>
     <input
@@ -102,6 +103,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    src: {
+      type: String,
+      required: false,
     },
   },
   data() {
