@@ -11,9 +11,14 @@ export const fetchRooms = ({ currentPage, itemsPerPage }) => {
   });
 };
 export const saveRoom = (formData) => {
+  const headers = { "Content-Type": "multipart/form-data" };
   return formData.id
-    ? apiClient.put(`${uri}${formData.id}`, formData)
-    : apiClient.post(uri, formData);
+    ? apiClient.put(`${uri}${formData.id}`, formData, {
+        headers,
+      })
+    : apiClient.post(uri, formData, {
+        headers,
+      });
 };
 
 export const fetchRoomsByStatus = (status, { currentPage, itemsPerPage }) => {
