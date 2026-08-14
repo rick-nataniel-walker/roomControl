@@ -19,11 +19,19 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { requiresAuth: true, activeMenu: "dashboard" },
+    meta: {
+      requiresAuth: true,
+      activeMenu: "dashboard",
+      breadcrumb: "Dashboard",
+    },
   },
   {
     path: "/rooms",
-    meta: { requiresAuth: true, activeMenu: "rooms" },
+    meta: {
+      requiresAuth: true,
+      activeMenu: "rooms",
+      breadcrumb: { label: "Quartos", to: { name: "rooms" } },
+    },
     children: [
       {
         path: "",
@@ -34,18 +42,24 @@ const routes = [
         path: "new",
         name: "addRoom",
         component: RoomsActionView,
+        meta: { breadcrumb: "Novo quarto" },
       },
       {
         path: ":id",
         name: "editRoom",
         component: RoomsActionView,
         props: true,
+        meta: { breadcrumb: "Editar quarto" },
       },
     ],
   },
   {
     path: "/reservations",
-    meta: { requiresAuth: true, activeMenu: "reservations" },
+    meta: {
+      requiresAuth: true,
+      activeMenu: "reservations",
+      breadcrumb: { label: "Reservas", to: { name: "reservations" } },
+    },
     children: [
       {
         path: "",
@@ -56,16 +70,19 @@ const routes = [
         path: "new",
         name: "newReservation",
         component: ReservationsActionView,
+        meta: { breadcrumb: "Novo pedido" },
       },
       {
         path: ":id",
         name: "editReservation",
         component: ReservationsActionView,
+        meta: { breadcrumb: "Editar pedido" },
       },
       {
         path: ":id/confirm-payment",
         name: "confirmReservation",
         component: ReservationsPaymentConfrimationView,
+        meta: { breadcrumb: "Confirmar pagamento" },
       },
     ],
   },
