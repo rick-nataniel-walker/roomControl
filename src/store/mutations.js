@@ -23,6 +23,7 @@ export const mutations = {
   },
 
   [FETCH_ROOM](state, payload) {
+    //payload.data.map(item => item.id = payload.id);
     state.rooms = payload;
   },
 

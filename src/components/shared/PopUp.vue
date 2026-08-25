@@ -186,7 +186,7 @@ export default {
 
 <style scoped>
 .popup-wrapper {
-  @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4;
+  @apply fixed inset-0 z-40 flex items-center justify-center bg-slate-950/50 p-4;
   backdrop-filter: blur(2px);
 }
 

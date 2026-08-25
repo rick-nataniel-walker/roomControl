@@ -177,7 +177,10 @@ export default {
   async beforeRouteEnter(to, from, next) {
     try {
       store.commit("resetReservation");
-      await store.dispatch(FETCH_ROOM_BY_STATUS, "free");
+      await store.dispatch(FETCH_ROOM_BY_STATUS, "free", {
+        currentPage: 0,
+        itemsPerPage: 5,
+      });
       next();
     } catch (error) {
       next(error);

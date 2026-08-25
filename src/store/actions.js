@@ -15,6 +15,7 @@ import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
 import {
   desecupyRoom,
+  fetchAllRoomsByStatus,
   fetchRooms,
   fetchRoomsByName,
   fetchRoomsByStatus,
@@ -67,14 +68,20 @@ export const actions = {
         throw error;
       });
   },
-  [FETCH_ROOM_BY_STATUS](
-    context,
-    status,
-    pagination = {
-      currentPage: 0,
-      itemsPerPage: 5,
-    }
-  ) {
+  [FETCH_ROOM_BY_STATUS](context, status, pagination) {
+    if (!pagination)
+      return fetchAllRoomsByStatus(status)
+        .then((response) => {
+          context.commit(FETCH_ROOM, response.data);
+          return response;
+        })
+        .catch((error) => {
+          showAlert({
+            type: "error",
+            title: "Não foi possível busca quartos!",
+            message: error.response.data.message,
+          });
+        });
     return fetchRoomsByStatus(status, pagination)
       .then((response) => {
         context.commit(FETCH_ROOM, response.data);
