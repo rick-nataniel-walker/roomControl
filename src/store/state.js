@@ -47,6 +47,16 @@ export const state = {
     roomId: "",
     cardNumber: "",
   },
+  statistics: {
+    roomsCount: 0,
+    freeRoomsCount: 0,
+    busyRoomsCount: 0,
+    maintenanceRoomsCount: 0,
+    cleaningRoomsCount: 0,
+    confirmedReservationsCount: 0,
+    checkedOutReservations: 0,
+    activeReservationsCount: 0,
+  },
   systemConfig: {
     roomStatues: {
       free: "Desocupado",

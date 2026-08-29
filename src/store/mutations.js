@@ -1,4 +1,5 @@
 import {
+  DASHBOARD_STATISTICS,
   LOGIN,
   SAVE_ROOM,
   START_LOADING,
@@ -66,5 +67,9 @@ export const mutations = {
       roomId: "",
       cardNumber: "",
     };
+  },
+
+  [DASHBOARD_STATISTICS](state, payload) {
+    state.statistics = { ...payload };
   },
 };

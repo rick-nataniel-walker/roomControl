@@ -9,6 +9,7 @@ import {
   LOGIN,
   SAVE_RESERVATION,
   SAVE_ROOM,
+  DASHBOARD_STATISTICS,
 } from "@/store/constants";
 import { login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
@@ -28,6 +29,7 @@ import {
   fetchReservationsByRoomName,
   saveReservation,
 } from "@/api/reservations";
+import { dashboardStatistics } from "@/api/statistics";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -253,10 +255,23 @@ export const actions = {
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
         showAlert({
           type: "error",
           title: "Erro ao criar pedido!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [DASHBOARD_STATISTICS](context) {
+    return dashboardStatistics()
+      .then((response) => {
+        let payload = response.data;
+        context.commit(DASHBOARD_STATISTICS, payload);
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao buscar estatistícas",
           message: error.response.data.message,
         });
       });

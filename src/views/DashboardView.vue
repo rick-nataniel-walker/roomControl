@@ -3,32 +3,13 @@
     <template #body>
       <div class="flex flex-row flex-wrap tablet:flex-nowrap gap-4 py-4 pt-0">
         <StatisticCard
-          color="text-goldAccent"
-          bg-color="bg-lightVariants-goldAccent"
-          label="Quartos"
-          number="14"
-          icon="fa-bed"
-        />
-        <StatisticCard
-          color="text-royalBlue"
-          bg-color="bg-lightVariants-royalBlue"
-          label="Quartos"
-          number="14"
-          icon="fa-bed"
-        />
-        <StatisticCard
-          color="text-gray-100"
-          bg-color="rgba(30, 58, 186, 0.5)"
-          label="Quartos"
-          number="14"
-          icon="fa-bed"
-        />
-        <StatisticCard
-          color="text-gray-100"
-          bg-color="rgba(30, 58, 186, 0.5)"
-          label="Quartos"
-          number="14"
-          icon="fa-bed"
+          v-for="card in statisticCards"
+          :key="card.id"
+          :color="card.color"
+          :bg-color="card.bgColor"
+          :label="card.label"
+          :number="card.number"
+          :icon="card.icon"
         />
       </div>
       <div class="flex flex-col gap-4 tablet:flex-row">
@@ -89,6 +70,9 @@ import ContentCard from "@/components/shared/ContentCard.vue";
 import TextBadge from "@/components/shared/TextBadge.vue";
 import DoughnutChart from "@/components/charts/doughnut/DoughnutChart.vue";
 import ContentWrapper from "@/components/ContentWrapper.vue";
+import { mapActions, mapState } from "vuex";
+import { DASHBOARD_STATISTICS } from "@/store/constants";
+import store from "@/store";
 
 export default {
   name: "DashboardView",
@@ -98,6 +82,58 @@ export default {
     StatisticCard,
     ContentCard,
     TextBadge,
+  },
+  data() {
+    return {
+      statisticCards: [
+        {
+          id: 1,
+          color: "text-goldAccent",
+          bgColor: "bg-lightVariants-goldAccent",
+          label: "Quartos",
+          number: 14,
+          icon: "fa-bed",
+        },
+        {
+          id: 2,
+          color: "text-royalBlue",
+          bgColor: "bg-lightVariants-royalBlue",
+          label: "Quartos",
+          number: 14,
+          icon: "fa-bed",
+        },
+        {
+          id: 3,
+          color: "text-gray-100",
+          bgColor: "rgba(30, 58, 186, 0.5)",
+          label: "Quartos",
+          number: 14,
+          icon: "fa-bed",
+        },
+        {
+          id: 4,
+          color: "text-gray-100",
+          bgColor: "rgba(30, 58, 186, 0.5)",
+          label: "Quartos",
+          number: 14,
+          icon: "fa-bed",
+        },
+      ],
+    };
+  },
+  computed: {
+    ...mapState(["statistics"]),
+  },
+  methods: {
+    ...mapActions([DASHBOARD_STATISTICS]),
+  },
+  async beforeRouteEnter(to, from, next) {
+    try {
+      await store.dispatch(DASHBOARD_STATISTICS);
+      next();
+    } catch (e) {
+      next(e);
+    }
   },
 };
 </script>
