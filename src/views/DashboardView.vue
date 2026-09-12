@@ -13,8 +13,8 @@
         />
       </div>
       <div class="flex flex-col gap-4 tablet:flex-row">
-        <ContentCard title="Estatística dos Quartos">
-          <DoughnutChart />
+        <ContentCard title="Estado das reservas">
+          <DoughnutChart :chartParts="makeChartParts" />
         </ContentCard>
 
         <ContentCard title="Reservas de hoje" class="gap-4">
@@ -119,10 +119,31 @@ export default {
           icon: "fa-bed",
         },
       ],
+
+      chartParts: [],
     };
   },
   computed: {
     ...mapState(["statistics"]),
+    makeChartParts() {
+      return [
+        {
+          legend: "Confirmadas",
+          type: "success",
+          value: this.statistics.confirmedReservationsCount,
+        },
+        {
+          legend: "Pagas",
+          type: "warning",
+          value: this.statistics.checkedOutReservations,
+        },
+        {
+          legend: "Activas",
+          type: "danger",
+          value: this.statistics.activeReservationsCount,
+        },
+      ];
+    },
   },
   methods: {
     ...mapActions([DASHBOARD_STATISTICS]),

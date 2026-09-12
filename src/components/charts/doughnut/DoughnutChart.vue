@@ -8,15 +8,16 @@ export default {
     DoughnutChartPart,
     DotBadge,
   },
-  data() {
-    return {
-      chartParts: [
-        { legend: "Disponível", type: "success", value: 45 },
-        { legend: "Em limpeza", type: "warning", value: 35 },
-        { legend: "Ocupado", type: "danger", value: 10 },
-        { legend: "Reservado", type: "secondary", value: 10 },
-      ],
-    };
+  props: {
+    chartParts: {
+      type: Array,
+      required: true,
+    },
+    unit: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
   computed: {
     partsWithOffsets() {
@@ -64,7 +65,7 @@ export default {
           :key="part.type"
           :legend="part.legend"
           :type="part.type"
-          :statistic="`${part.value}%`"
+          :statistic="`${part.value}${unit}`"
           class="my-1"
         />
       </div>

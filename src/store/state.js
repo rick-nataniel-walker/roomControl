@@ -53,6 +53,7 @@ export const state = {
     busyRoomsCount: 0,
     maintenanceRoomsCount: 0,
     cleaningRoomsCount: 0,
+    allReservationsCount: 0,
     confirmedReservationsCount: 0,
     checkedOutReservations: 0,
     activeReservationsCount: 0,
