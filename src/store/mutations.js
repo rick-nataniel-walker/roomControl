@@ -1,9 +1,11 @@
 import {
   DASHBOARD_STATISTICS,
+  FETCH_TENANT,
   LOGIN,
   SAVE_ROOM,
   START_LOADING,
   STOP_LOADING,
+  UPDATE_REFRESH_TOKEN,
 } from "@/store/constants";
 import { FETCH_ROOM } from "@/store/constants";
 
@@ -71,5 +73,11 @@ export const mutations = {
 
   [DASHBOARD_STATISTICS](state, payload) {
     state.statistics = { ...payload };
+  },
+  [FETCH_TENANT](state, payload) {
+    state.tenant = { ...payload };
+  },
+  [UPDATE_REFRESH_TOKEN](state, payload) {
+    state.tenant = { ...payload };
   },
 };

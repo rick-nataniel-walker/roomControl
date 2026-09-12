@@ -28,3 +28,36 @@ export const reservationsListingsDropdownlist = [
     ],
   },
 ];
+
+export const navMenuItems = [
+  {
+    label: "Dashboard",
+    icon: "home",
+    route: { name: "dashboard" },
+    activeMenu: "dashboard",
+  },
+  {
+    label: "Quartos",
+    icon: "bed",
+    route: { name: "rooms" },
+    activeMenu: "rooms",
+  },
+  {
+    label: "Reservas",
+    icon: "money-check",
+    route: { name: "reservations" },
+    activeMenu: "reservations",
+  },
+  {
+    label: "Relatórios",
+    icon: "chart-line",
+    route: { name: "reports" },
+    activeMenu: "reports",
+  },
+  {
+    label: "Configurações",
+    icon: "gear",
+    route: { name: "configs" },
+    activeMenu: "configs",
+  },
+];

@@ -10,8 +10,10 @@ import {
   SAVE_RESERVATION,
   SAVE_ROOM,
   DASHBOARD_STATISTICS,
+  FETCH_TENANT,
+  UPDATE_REFRESH_TOKEN,
 } from "@/store/constants";
-import { login } from "@/api/auth";
+import { fetchUserTenant, login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
 import {
@@ -30,6 +32,7 @@ import {
   saveReservation,
 } from "@/api/reservations";
 import { dashboardStatistics } from "@/api/statistics";
+import { updateRefreshToken } from "@/api/tenants";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -272,6 +275,40 @@ export const actions = {
         showAlert({
           type: "error",
           title: "Erro ao buscar estatistícas",
+          message: error.response.data.message,
+        });
+      });
+  },
+
+  [FETCH_TENANT](context) {
+    return fetchUserTenant()
+      .then((response) => {
+        let payload = response.data;
+        context.commit(FETCH_TENANT, payload);
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro ao buscar a empresa!",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [UPDATE_REFRESH_TOKEN](context, id) {
+    return updateRefreshToken(id)
+      .then((response) => {
+        let payload = response.data;
+        context.commit(UPDATE_REFRESH_TOKEN, payload);
+        showAlert({
+          type: "success",
+          title: "Efectuado!",
+          message: "efectuado com sucesso!",
+        });
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Erro actualizar",
           message: error.response.data.message,
         });
       });

@@ -1,6 +1,7 @@
 <script>
 import NavigationMenuItem from "@/components/nav/NavigationMenuItem.vue";
 import navyLogo from "@/assets/navy-logo.png";
+import { navMenuItems } from "@/datasources/datasourcess";
 
 export default {
   name: "NavigationMenu",
@@ -10,32 +11,7 @@ export default {
   data() {
     return {
       navyLogo,
-      menuItems: [
-        {
-          label: "Dashboard",
-          icon: "home",
-          route: { name: "dashboard" },
-          activeMenu: "dashboard",
-        },
-        {
-          label: "Quartos",
-          icon: "bed",
-          route: { name: "rooms" },
-          activeMenu: "rooms",
-        },
-        {
-          label: "Reservas",
-          icon: "money-check",
-          route: { name: "reservations" },
-          activeMenu: "reservations",
-        },
-        {
-          label: "Relatórios",
-          icon: "chart-line",
-          route: { name: "reports" },
-          activeMenu: "reports",
-        },
-      ],
+      navMenuItems,
     };
   },
   methods: {
@@ -59,7 +35,7 @@ export default {
       alt="RoomControl, powered by TrueControl"
     />
     <NavigationMenuItem
-      v-for="menuItem in menuItems"
+      v-for="menuItem in navMenuItems"
       :key="menuItem.label"
       @click="navigateTo(menuItem.route)"
       :label="menuItem.label"

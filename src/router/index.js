@@ -7,6 +7,7 @@ import RoomsActionView from "@/views/rooms/RoomsActionView.vue";
 import ReservationView from "@/views/reservations/ReservationView.vue";
 import ReservationsActionView from "@/views/reservations/ReservationsActionView.vue";
 import ReservationsPaymentConfrimationView from "@/views/reservations/ReservationsPaymentConfrimationView.vue";
+import ConfigsView from "@/views/ConfigsView.vue";
 
 const routes = [
   {
@@ -85,6 +86,16 @@ const routes = [
         meta: { breadcrumb: "Confirmar pagamento" },
       },
     ],
+  },
+  {
+    path: "/configs",
+    name: "configs",
+    component: ConfigsView,
+    meta: {
+      requiresAuth: true,
+      activeMenu: "configs",
+      breadcrumb: "Configurações",
+    },
   },
 ];
 

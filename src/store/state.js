@@ -58,6 +58,17 @@ export const state = {
     checkedOutReservations: 0,
     activeReservationsCount: 0,
   },
+
+  tenant: {
+    id: "",
+    name: "",
+    website: "",
+    email: "",
+    phoneNumber: "",
+    adminUsername: "",
+    adminTelephone: "",
+  },
+
   systemConfig: {
     roomStatues: {
       free: "Desocupado",
