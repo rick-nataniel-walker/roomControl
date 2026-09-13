@@ -21,46 +21,29 @@
           />
         </ContentCard>
 
-        <ContentCard title="Reservas de hoje" class="gap-4">
+        <ContentCard title="Reservas recentes" class="gap-4">
           <div
+            v-for="reservation in reservations.data"
+            :key="reservation.id"
             class="flex items-center justify-between p-4 w-full gap-4 my-2 border border-gray-200 rounded-lg"
           >
-            <span class="text-base font-semibold">Room1</span>
+            <span class="text-base font-semibold">{{
+              reservation.roomName
+            }}</span>
             <div class="text-sm">
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-              <div class="flex flex-wrap">10:45 até 12:45</div>
+              <div class="flex flex-wrap">
+                Entrada:
+                {{ formatTime(reservation.checkinTime) }}
+              </div>
+              <div class="flex flex-wrap">
+                Saída:
+                {{ formatTime(reservation.checkoutTime) }}
+              </div>
             </div>
-            <TextBadge type="warning" value="Em limpeza" />
-          </div>
-          <div
-            class="flex items-center justify-between p-4 w-full gap-4 my-2 border border-gray-200 rounded-lg"
-          >
-            <span class="text-base font-semibold">Room2</span>
-            <div class="text-sm">
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-            </div>
-            <TextBadge type="danger" value="Em limpeza" />
-          </div>
-          <div
-            class="flex items-center justify-between p-4 w-full gap-4 my-2 border border-gray-200 rounded-lg"
-          >
-            <span class="text-base font-semibold">Room3</span>
-            <div class="text-sm">
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-            </div>
-            <TextBadge type="normal" value="Em limpeza" />
-          </div>
-          <div
-            class="flex items-center justify-between p-4 w-full gap-4 my-2 border border-gray-200 rounded-lg"
-          >
-            <span class="text-base font-semibold">Room3</span>
-            <div class="text-sm">
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-              <div class="flex flex-wrap">10:45 até 12:45</div>
-            </div>
-            <TextBadge type="success" value="Em limpeza" />
+            <TextBadge
+              :type="mapStatus(reservation.status)"
+              :value="reservation.status"
+            />
           </div>
         </ContentCard>
       </div>
@@ -75,8 +58,9 @@ import TextBadge from "@/components/shared/TextBadge.vue";
 import DoughnutChart from "@/components/charts/doughnut/DoughnutChart.vue";
 import ContentWrapper from "@/components/ContentWrapper.vue";
 import { mapActions, mapState } from "vuex";
-import { DASHBOARD_STATISTICS } from "@/store/constants";
+import { DASHBOARD_STATISTICS, FETCH_RESERVATIONS } from "@/store/constants";
 import store from "@/store";
+import { javaDateTimeFormatter } from "@/helpers/DateHelper";
 
 export default {
   name: "DashboardView",
@@ -93,7 +77,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["statistics"]),
+    ...mapState(["statistics", "reservations"]),
     makeChartParts() {
       return [
         {
@@ -151,11 +135,28 @@ export default {
     },
   },
   methods: {
-    ...mapActions([DASHBOARD_STATISTICS]),
+    ...mapActions([DASHBOARD_STATISTICS, FETCH_RESERVATIONS]),
+    formatTime(datetime) {
+      const { time } = javaDateTimeFormatter(datetime);
+      return time ? time.slice(0, 5) : "—";
+    },
+    mapStatus(status) {
+      switch (status?.toLowerCase()) {
+        case "pago":
+          return "success";
+        case "falhado":
+          return "danger";
+        case "pendente":
+          return "warning";
+        default:
+          return "basic";
+      }
+    },
   },
   async beforeRouteEnter(to, from, next) {
     try {
       await store.dispatch(DASHBOARD_STATISTICS);
+      await store.dispatch(FETCH_RESERVATIONS);
       next();
     } catch (e) {
       next(e);

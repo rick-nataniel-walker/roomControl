@@ -10,6 +10,13 @@ export const formatDateTime = (date, withSeconds = true) => {
     withSeconds ? seconds : ""
   }`;
 };
+export const formatTime = (date, withSeconds = false) => {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${hours}:${minutes}${withSeconds ? seconds : ""}`;
+};
 export const javaDateTimeFormatter = (dateTime) => {
   if (typeof dateTime !== "string") {
     return { date: "", time: "" };
