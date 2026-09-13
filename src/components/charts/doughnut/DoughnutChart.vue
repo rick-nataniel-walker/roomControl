@@ -9,6 +9,14 @@ export default {
     DotBadge,
   },
   props: {
+    total: {
+      type: Number,
+      default: 100,
+    },
+    totalLegend: {
+      type: String,
+      default: "",
+    },
     chartParts: {
       type: Array,
       required: true,
@@ -24,8 +32,15 @@ export default {
       let offset = 0;
 
       return this.chartParts.map((part) => {
-        const chartPart = { ...part, offset };
-        offset += part.value;
+        const percentage =
+          Number.isFinite(this.total) &&
+          this.total > 0 &&
+          Number.isFinite(part.value)
+            ? (part.value / this.total) * 100
+            : 0;
+        const value = Math.min(100 - offset, Math.max(0, percentage));
+        const chartPart = { ...part, value, offset };
+        offset += value;
         return chartPart;
       });
     },
@@ -60,6 +75,13 @@ export default {
         </svg>
       </div>
       <div class="legend">
+        <DotBadge
+          v-if="totalLegend"
+          :legend="totalLegend"
+          type="dark"
+          :statistic="`${total}${unit}`"
+          class="my-1"
+        />
         <DotBadge
           v-for="part in chartParts"
           :key="part.type"

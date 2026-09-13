@@ -57,6 +57,7 @@ export const state = {
     confirmedReservationsCount: 0,
     checkedOutReservations: 0,
     activeReservationsCount: 0,
+    pendingReservations: 0,
   },
 
   tenant: {

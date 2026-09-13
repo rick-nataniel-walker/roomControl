@@ -14,7 +14,11 @@
       </div>
       <div class="flex flex-col gap-4 tablet:flex-row">
         <ContentCard title="Estado das reservas">
-          <DoughnutChart :chartParts="makeChartParts" />
+          <DoughnutChart
+            :chartParts="makeChartParts"
+            :total="statistics.allReservationsCount"
+            total-legend="Reservas efectuadas"
+          />
         </ContentCard>
 
         <ContentCard title="Reservas de hoje" class="gap-4">
@@ -85,41 +89,6 @@ export default {
   },
   data() {
     return {
-      statisticCards: [
-        {
-          id: 1,
-          color: "text-goldAccent",
-          bgColor: "bg-lightVariants-goldAccent",
-          label: "Quartos",
-          number: 14,
-          icon: "fa-bed",
-        },
-        {
-          id: 2,
-          color: "text-royalBlue",
-          bgColor: "bg-lightVariants-royalBlue",
-          label: "Quartos",
-          number: 14,
-          icon: "fa-bed",
-        },
-        {
-          id: 3,
-          color: "text-gray-100",
-          bgColor: "rgba(30, 58, 186, 0.5)",
-          label: "Quartos",
-          number: 14,
-          icon: "fa-bed",
-        },
-        {
-          id: 4,
-          color: "text-gray-100",
-          bgColor: "rgba(30, 58, 186, 0.5)",
-          label: "Quartos",
-          number: 14,
-          icon: "fa-bed",
-        },
-      ],
-
       chartParts: [],
     };
   },
@@ -129,18 +98,54 @@ export default {
       return [
         {
           legend: "Confirmadas",
-          type: "success",
+          type: "secondary",
           value: this.statistics.confirmedReservationsCount,
         },
         {
-          legend: "Pagas",
-          type: "warning",
+          legend: "Finalizada",
+          type: "success",
           value: this.statistics.checkedOutReservations,
         },
         {
-          legend: "Activas",
-          type: "danger",
-          value: this.statistics.activeReservationsCount,
+          legend: "Pendentes",
+          type: "warning",
+          value: this.statistics.pendingReservations,
+        },
+      ];
+    },
+    statisticCards() {
+      return [
+        {
+          id: 1,
+          color: "text-royalBlue",
+          bgColor: "bg-lightVariants-royalBlue",
+          label: "Todos Quartos",
+          number: this.statistics.roomsCount,
+          icon: "fa-bed",
+        },
+        {
+          id: 2,
+          color: "text-goldAccent",
+          bgColor: "bg-lightVariants-goldAccent",
+          label: "Quartos Ocupados",
+          number: this.statistics.busyRoomsCount,
+          icon: "fa-bed",
+        },
+        {
+          id: 3,
+          color: "text-emerald",
+          bgColor: "bg-lightVariants-emerald",
+          label: "Quartos livres",
+          number: this.statistics.freeRoomsCount,
+          icon: "fa-bed",
+        },
+        {
+          id: 4,
+          color: "text-gray-100",
+          bgColor: "rgba(30, 58, 186, 0.5)",
+          label: "Quartos",
+          number: 14,
+          icon: "fa-bed",
         },
       ];
     },
