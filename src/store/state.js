@@ -20,6 +20,8 @@ export const state = {
     name: "",
     lockId: "",
     status: "",
+    price: "",
+    pricingUnit: "",
     reservations: [],
     ttLockAccesses: [],
     tenant: "",
@@ -90,5 +92,6 @@ export const state = {
       creditCard: "CARTÃO",
     },
     durationHours: ["1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12"],
+    durationUnits: null,
   },
 };

@@ -12,6 +12,7 @@ import {
   DASHBOARD_STATISTICS,
   FETCH_TENANT,
   UPDATE_REFRESH_TOKEN,
+  FETCH_SYS_CONFIG,
 } from "@/store/constants";
 import { fetchUserTenant, login } from "@/api/auth";
 import showAlert from "@/helpers/alert";
@@ -33,6 +34,7 @@ import {
 } from "@/api/reservations";
 import { dashboardStatistics } from "@/api/statistics";
 import { updateRefreshToken } from "@/api/tenants";
+import { globalConfigs } from "@/api/systemConfigs";
 
 export const actions = {
   [LOGIN](context, formdata) {
@@ -309,6 +311,21 @@ export const actions = {
         showAlert({
           type: "error",
           title: "Erro actualizar",
+          message: error.response.data.message,
+        });
+      });
+  },
+  [FETCH_SYS_CONFIG](context, { group, subgroup }) {
+    return globalConfigs(group, subgroup)
+      .then((response) => {
+        let payload = response.data.data;
+        console.log(payload[0].lookupKey);
+        context.commit(FETCH_SYS_CONFIG, payload);
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Busca de configurações falhou",
           message: error.response.data.message,
         });
       });

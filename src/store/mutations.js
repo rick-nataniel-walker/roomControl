@@ -1,5 +1,6 @@
 import {
   DASHBOARD_STATISTICS,
+  FETCH_SYS_CONFIG,
   FETCH_TENANT,
   LOGIN,
   SAVE_ROOM,
@@ -79,5 +80,8 @@ export const mutations = {
   },
   [UPDATE_REFRESH_TOKEN](state, payload) {
     state.tenant = { ...payload };
+  },
+  [FETCH_SYS_CONFIG](state, payload) {
+    state.systemConfig.durationUnits = payload;
   },
 };

@@ -22,7 +22,7 @@
             </FormGroup>
           </div>
           <div class="grid grid-cols-2 items-center gap-4 text-sm">
-            <span>Duração em horas</span>
+            <span>Duração</span>
             <FormGroup
               input-type="select"
               label=""
@@ -115,6 +115,7 @@ export default {
         exitDate: 0,
       },
       savedReservation: null,
+      selectedRoom: null,
     };
   },
   methods: {
@@ -144,7 +145,7 @@ export default {
         .replace(/\s/g, "");
     },
     calculateReservation(durationHours) {
-      const roomPrice = 250;
+      const roomPrice = this.selectedRoom.price;
       const hours = Number(durationHours);
 
       if (!Number.isFinite(hours) || hours < 0) {
@@ -167,10 +168,10 @@ export default {
       this.$router.push(route);
     },
     getRoom(roomId) {
-      const room = getItemByField(this.rooms.data, roomId);
+      this.selectedRoom = getItemByField(this.rooms.data, roomId);
 
-      this.reservation.roomName = room?.name ?? "";
-      return room ?? null;
+      this.reservation.roomName = this.selectedRoom?.name ?? "";
+      return this.selectedRoom ?? null;
     },
   },
 
