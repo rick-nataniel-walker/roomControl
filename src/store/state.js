@@ -40,7 +40,7 @@ export const state = {
     id: null,
     checkinTime: "",
     checkoutTime: "",
-    durationHours: null,
+    stayDuration: null,
     paymentMethod: "",
     paymentConfirm: null,
     checkedOut: null,
@@ -48,6 +48,8 @@ export const state = {
     roomName: "",
     roomId: "",
     cardNumber: "",
+    durationUnit: "",
+    price: "",
   },
   statistics: {
     roomsCount: 0,

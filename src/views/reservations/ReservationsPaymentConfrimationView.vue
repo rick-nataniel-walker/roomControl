@@ -41,12 +41,12 @@
             </FormGroup>
           </div>
           <div class="grid grid-cols-2 items-center gap-4 text-sm">
-            <span>Duração em horas</span>
+            <span>Duração</span>
             <FormGroup
               input-type="select"
               label=""
               required
-              v-model="reservation.durationHours"
+              v-model="reservation.stayDuration"
               @update:model-value="calculateReservation"
             >
               <option
@@ -55,6 +55,31 @@
                 :value="duration"
               >
                 {{ duration }}
+              </option>
+            </FormGroup>
+          </div>
+
+          <div class="grid grid-cols-2 items-center gap-4 text-sm">
+            <span>Unidade de duração</span>
+            <FormGroup
+              label=""
+              required
+              v-model="this.reservation.durationUnit"
+              input-type="select"
+              @update:model-value="
+                calculateReservation(reservation.stayDuration)
+              "
+            >
+              <option
+                v-for="durationUnit in systemConfig.durationUnits"
+                :key="durationUnit.lookupKey"
+                :value="durationUnit.lookupKey"
+                :disabled="
+                  Number(durationUnit.lookupKey) <
+                  Number(selectedRoom?.pricingUnit)
+                "
+              >
+                {{ durationUnit.lookupValue }}
               </option>
             </FormGroup>
           </div>
@@ -89,7 +114,9 @@
             </div>
             <div class="flex flex-col">
               <span>Duração</span>
-              <span>{{ reservation.durationHours }}</span>
+              <span>
+                {{ reservation.stayDuration }} {{ durationUnitLabel }}
+              </span>
             </div>
           </div>
           <div class="flex justify-end gap-4">
@@ -115,7 +142,11 @@ import ActionBtn from "@/components/shared/ActionBtn.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { formatDateTime } from "@/helpers/DateHelper";
 import { getItemByField } from "@/helpers/GeneralHelper";
-import { CONFIRM_RESERVATION, FETCH_ROOM_BY_STATUS } from "@/store/constants";
+import {
+  CONFIRM_RESERVATION,
+  FETCH_ROOM_BY_STATUS,
+  FETCH_SYS_CONFIG,
+} from "@/store/constants";
 import store from "@/store";
 
 export default {
@@ -123,6 +154,15 @@ export default {
   components: { ActionBtn, ContentCard, FormGroup, ContentWrapper },
   computed: {
     ...mapState(["reservation", "reservations", "systemConfig", "rooms"]),
+    durationUnitLabel() {
+      return (
+        getItemByField(
+          this.systemConfig.durationUnits,
+          this.reservation.durationUnit,
+          "lookupKey"
+        )?.lookupValue ?? ""
+      );
+    },
   },
   data() {
     return {
@@ -132,6 +172,7 @@ export default {
         exitDate: 0,
       },
       savedReservation: null,
+      selectedRoom: null,
       localReservations: [],
     };
   },
@@ -170,11 +211,24 @@ export default {
         .toUpperCase()
         .replace(/\s/g, "");
     },
-    calculateReservation(durationHours) {
-      const roomPrice = 250;
-      const hours = Number(durationHours);
+    calculateReservation(stayDuration) {
+      // Months use a fixed 30-day duration for both pricing and checkout.
+      const hoursPerUnit = { 1: 1, 2: 24, 3: 168, 4: 720 };
+      const roomPrice = Number(this.selectedRoom?.price);
+      const roomUnit = Number(this.selectedRoom?.pricingUnit);
+      const stayUnit = Number(this.reservation.durationUnit);
+      const duration = Number(stayDuration);
 
-      if (!Number.isFinite(hours) || hours < 0) {
+      if (
+        !this.selectedRoom ||
+        !Number.isFinite(roomPrice) ||
+        roomPrice < 0 ||
+        !Number.isFinite(duration) ||
+        duration < 0 ||
+        !hoursPerUnit[roomUnit] ||
+        !hoursPerUnit[stayUnit] ||
+        stayUnit < roomUnit
+      ) {
         this.reservationDetails.totalPrice = 0;
         this.reservationDetails.exitDate = "";
         return;
@@ -184,20 +238,30 @@ export default {
         this.reservationDetails.entryDate.replace(" ", "T")
       );
       const exitDate = new Date(entryDate);
+      const hours = duration * hoursPerUnit[stayUnit];
 
-      exitDate.setHours(exitDate.getHours() + hours);
+      exitDate.setTime(exitDate.getTime() + hours * 60 * 60 * 1000);
 
-      this.reservationDetails.totalPrice = hours * roomPrice;
+      this.reservationDetails.totalPrice =
+        (hours / hoursPerUnit[roomUnit]) * roomPrice;
       this.reservationDetails.exitDate = formatDateTime(exitDate, false);
     },
     goTo(route) {
       this.$router.push(route);
     },
     getRoom(roomId) {
-      const room = getItemByField(this.rooms.data, roomId);
-
-      this.$store.state.reservation.roomName = room?.name ?? "";
-      return room ?? null;
+      this.selectedRoom = getItemByField(this.rooms.data, roomId);
+      this.reservation.roomName = this.selectedRoom?.name ?? "";
+      if (
+        this.selectedRoom &&
+        (!this.reservation.durationUnit ||
+          Number(this.reservation.durationUnit) <
+            Number(this.selectedRoom.pricingUnit))
+      ) {
+        this.reservation.durationUnit = this.selectedRoom.pricingUnit;
+      }
+      this.calculateReservation(this.reservation.stayDuration);
+      return this.selectedRoom ?? null;
     },
   },
 
@@ -205,7 +269,7 @@ export default {
     this.localReservations =
       JSON.parse(localStorage.getItem("reservations")) ?? [];
     let dbReservation = this.reservations.data[this.$route.params.id];
-    if (!dbReservation) this.goTo({ name: "reservations" });
+    if (!dbReservation) return this.goTo({ name: "reservations" });
 
     let localReservation = getItemByField(
       this.localReservations,
@@ -213,13 +277,16 @@ export default {
     );
 
     this.setReservation(localReservation ?? dbReservation);
-    this.calculateReservation(this.reservation.durationHours);
-    this.formatPrice(this.reservationDetails.totalPrice);
+    this.getRoom(this.reservation.roomId);
   },
 
   async beforeRouteEnter(to, from, next) {
     try {
       await store.dispatch(FETCH_ROOM_BY_STATUS, "free");
+      await store.dispatch(FETCH_SYS_CONFIG, {
+        group: 1,
+        subgroup: 1,
+      });
       next();
     } catch (error) {
       next(error);

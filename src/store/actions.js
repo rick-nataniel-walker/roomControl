@@ -319,7 +319,6 @@ export const actions = {
     return globalConfigs(group, subgroup)
       .then((response) => {
         let payload = response.data.data;
-        console.log(payload[0].lookupKey);
         context.commit(FETCH_SYS_CONFIG, payload);
       })
       .catch((error) => {
