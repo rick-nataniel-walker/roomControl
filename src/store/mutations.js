@@ -3,6 +3,7 @@ import {
   FETCH_SYS_CONFIG,
   FETCH_TENANT,
   LOGIN,
+  LOGOUT,
   SAVE_ROOM,
   START_LOADING,
   STOP_LOADING,
@@ -24,6 +25,14 @@ export const mutations = {
     let saltedToken = payload.jwtToken.split(";")[0];
     state.authenticationData.jwtToken = saltedToken.split("=")[1];
     state.authenticationData.roles = payload.roles;
+  },
+
+  [LOGOUT](state) {
+    state.authenticationData = {
+      username: "",
+      jwtToken: "",
+      roles: "",
+    };
   },
 
   [FETCH_ROOM](state, payload) {

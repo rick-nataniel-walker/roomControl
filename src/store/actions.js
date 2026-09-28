@@ -13,8 +13,9 @@ import {
   FETCH_TENANT,
   UPDATE_REFRESH_TOKEN,
   FETCH_SYS_CONFIG,
+  LOGOUT,
 } from "@/store/constants";
-import { fetchUserTenant, login } from "@/api/auth";
+import { fetchUserTenant, login, logout } from "@/api/auth";
 import showAlert from "@/helpers/alert";
 import { FETCH_ROOM } from "@/store/constants";
 import {
@@ -47,6 +48,22 @@ export const actions = {
         showAlert({
           type: "error",
           title: "Login falhou!!!",
+          message: error.response.data.message,
+        });
+        throw error;
+      });
+  },
+
+  [LOGOUT](context) {
+    return logout()
+      .then((response) => {
+        context.commit(LOGOUT);
+        return response;
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível sair!!!",
           message: error.response.data.message,
         });
         throw error;

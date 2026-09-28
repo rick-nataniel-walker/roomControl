@@ -64,6 +64,8 @@
 
 <script>
 import DropdownMenu from "@/components/shared/DropdownMenu.vue";
+import { mapActions, mapState } from "vuex";
+import { LOGOUT } from "@/store/constants";
 
 export default {
   name: "MainHeader",
@@ -115,6 +117,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["authenticationData"]),
     initials() {
       return this.userName
         .split(" ")
@@ -125,12 +128,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions([LOGOUT]),
     toggleProfileMenu() {
       this.profileMenuOpen = !this.profileMenuOpen;
       this.$emit("profile-click", this.profileMenuOpen);
     },
-    handleProfileSelect(selection) {
+    async handleProfileSelect(selection) {
       this.profileMenuOpen = false;
+      if (selection.index === 1) {
+        await this.LOGOUT();
+        if (this.authenticationData.username === "") this.$router.push("/");
+      }
       this.$emit("profile-menu-select", selection);
     },
   },

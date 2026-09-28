@@ -104,7 +104,7 @@ export default {
           color: "text-royalBlue",
           bgColor: "bg-lightVariants-royalBlue",
           label: "Todos Quartos",
-          number: this.statistics.roomsCount,
+          number: this.statistics.roomsCount ?? 0,
           icon: "fa-bed",
         },
         {
@@ -112,7 +112,7 @@ export default {
           color: "text-goldAccent",
           bgColor: "bg-lightVariants-goldAccent",
           label: "Quartos Ocupados",
-          number: this.statistics.busyRoomsCount,
+          number: this.statistics.busyRoomsCount ?? 0,
           icon: "fa-bed",
         },
         {
@@ -120,7 +120,7 @@ export default {
           color: "text-liteCyan",
           bgColor: "bg-lightVariants-liteCyan",
           label: "Quartos livres",
-          number: this.statistics.freeRoomsCount,
+          number: this.statistics.freeRoomsCount ?? 0,
           icon: "fa-bed",
         },
         {
@@ -128,7 +128,7 @@ export default {
           color: "text-emerald",
           bgColor: "bg-lightVariants-emerald",
           label: "Receitas de Hoje",
-          number: `${this.statistics.revenue} MZN`,
+          number: `${this.statistics.revenue ?? 0} MZN`,
           icon: "fa-sack-dollar",
         },
       ];

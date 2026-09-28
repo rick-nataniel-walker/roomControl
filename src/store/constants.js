@@ -6,6 +6,8 @@ export const STOP_LOADING = "STOP_LOADING";
 export const DASHBOARD_STATISTICS = "DASHBOARD_STATISTICS";
 
 export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
+
 export const FETCH_ROOM = "FETCH_ROOM";
 export const FETCH_ROOM_BY_STATUS = "FETCH_ROOM_BY_STATUS";
 export const FETCH_ROOM_BY_NAME = "FETCH_ROOM_BY_NAME";
