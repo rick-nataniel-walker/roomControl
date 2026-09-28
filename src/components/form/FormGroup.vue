@@ -16,6 +16,7 @@
         :value="modelValue"
         v-bind="$attrs"
         :type="controlType"
+        :autocomplete="autocomplete"
         class="form-control"
         :class="{ 'has-inner-icon': showsIcon }"
         :aria-invalid="showRequiredError ? 'true' : undefined"
@@ -67,6 +68,11 @@ export default {
     type: {
       type: String,
       default: "text",
+    },
+    autocomplete: {
+      type: String,
+      default: "off",
+      validator: (value) => ["on", "off"].includes(value),
     },
     icon: {
       type: [String, Array, Object],

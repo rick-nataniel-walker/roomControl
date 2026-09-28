@@ -87,6 +87,7 @@
             <span>Código do Cartão</span>
             <FormGroup
               label=""
+              autocomplete="on"
               required
               v-model="reservation.cardNumber"
               @change="convertCardNumberToCapitalLetters"
@@ -245,6 +246,7 @@ export default {
       this.reservationDetails.totalPrice =
         (hours / hoursPerUnit[roomUnit]) * roomPrice;
       this.reservationDetails.exitDate = formatDateTime(exitDate, false);
+      this.reservation.finalPrice = this.reservationDetails.totalPrice;
     },
     goTo(route) {
       this.$router.push(route);

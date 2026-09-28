@@ -128,7 +128,7 @@ export default {
           color: "text-emerald",
           bgColor: "bg-lightVariants-emerald",
           label: "Receitas de Hoje",
-          number: "50, 200.00 MZN",
+          number: `${this.statistics.revenue} MZN`,
           icon: "fa-sack-dollar",
         },
       ];

@@ -50,6 +50,7 @@ export const state = {
     cardNumber: "",
     durationUnit: "",
     price: "",
+    finalPrice: "",
   },
   statistics: {
     roomsCount: 0,
@@ -62,6 +63,7 @@ export const state = {
     checkedOutReservations: 0,
     activeReservationsCount: 0,
     pendingReservations: 0,
+    revenue: 0,
   },
 
   tenant: {
