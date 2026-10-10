@@ -5,10 +5,17 @@
 
 <script>
 import MainSpinner from "@/components/shared/MainSpinner.vue";
+import { installReservationPolling } from "@/helpers/reservationPolling";
 
 export default {
   name: "App",
   components: { MainSpinner },
+  mounted() {
+    this.stopReservationPolling = installReservationPolling(this.$store);
+  },
+  beforeUnmount() {
+    this.stopReservationPolling?.();
+  },
   computed: {
     isLoading() {
       return this.$store.state.pendingRequests > 0;

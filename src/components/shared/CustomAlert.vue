@@ -11,7 +11,7 @@
       v-if="isVisible"
       ref="alertRef"
       class="fixed z-50 max-w-md w-full shadow-lg rounded-lg pointer-events-auto"
-      :class="[positionClasses, alertClasses]"
+      :class="[positionClasses, alertClasses, { 'alert-blink': blink }]"
     >
       <div class="rounded-lg shadow-xs overflow-hidden">
         <div class="p-4">
@@ -90,6 +90,10 @@ import {
 export default defineComponent({
   name: "CustomAlert",
   props: {
+    blink: {
+      type: Boolean,
+      default: false,
+    },
     type: {
       type: String,
       default: "info",
@@ -351,5 +355,23 @@ export const InformationCircleIcon = {
 </script>
 
 <style scoped>
-/* We're using Tailwind, so no need for custom CSS */
+.alert-blink {
+  animation: alert-blink 1s steps(1, end) infinite;
+}
+
+@keyframes alert-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert-blink {
+    animation: none;
+  }
+}
 </style>

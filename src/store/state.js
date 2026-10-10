@@ -64,6 +64,9 @@ export const state = {
     activeReservationsCount: 0,
     pendingReservations: 0,
     revenue: 0,
+    overdue: {
+      loss: 0.0,
+    },
   },
 
   tenant: {

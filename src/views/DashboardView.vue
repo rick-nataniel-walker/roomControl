@@ -117,18 +117,18 @@ export default {
         },
         {
           id: 3,
-          color: "text-liteCyan",
-          bgColor: "bg-lightVariants-liteCyan",
-          label: "Quartos livres",
-          number: this.statistics.freeRoomsCount ?? 0,
-          icon: "fa-bed",
-        },
-        {
-          id: 4,
           color: "text-emerald",
           bgColor: "bg-lightVariants-emerald",
           label: "Receitas de Hoje",
           number: `${this.statistics.revenue ?? 0} MZN`,
+          icon: "fa-sack-dollar",
+        },
+        {
+          id: 4,
+          color: "text-red-500",
+          bgColor: "bg-red-100",
+          label: "Prejuízos",
+          number: `${this.statistics.overdue.loss} MZN`,
           icon: "fa-sack-dollar",
         },
       ];
