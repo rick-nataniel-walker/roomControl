@@ -8,8 +8,19 @@ import ReservationView from "@/views/reservations/ReservationView.vue";
 import ReservationsActionView from "@/views/reservations/ReservationsActionView.vue";
 import ReservationsPaymentConfrimationView from "@/views/reservations/ReservationsPaymentConfrimationView.vue";
 import ConfigsView from "@/views/ConfigsView.vue";
+import ReportsView from "@/views/ReportsView.vue";
 
 const routes = [
+  {
+    path: "/relatorios",
+    name: "reports",
+    component: ReportsView,
+    meta: {
+      requiresAuth: true,
+      activeMenu: "reports",
+      breadcrumb: "Relatórios",
+    },
+  },
   {
     path: "/",
     name: "login",

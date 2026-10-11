@@ -41,7 +41,7 @@
               </div>
             </div>
             <TextBadge
-              :type="mapStatus(reservation.status)"
+              :type="badge(reservation.status)"
               :value="reservation.status"
             />
           </div>
@@ -61,6 +61,7 @@ import { mapActions, mapState } from "vuex";
 import { DASHBOARD_STATISTICS, FETCH_RESERVATIONS } from "@/store/constants";
 import store from "@/store";
 import { javaDateTimeFormatter } from "@/helpers/DateHelper";
+import { badge, money } from "@/helpers/GeneralHelper";
 
 export default {
   name: "DashboardView",
@@ -120,21 +121,22 @@ export default {
           color: "text-emerald",
           bgColor: "bg-lightVariants-emerald",
           label: "Receitas de Hoje",
-          number: `${this.statistics.revenue ?? 0} MZN`,
-          icon: "fa-sack-dollar",
+          number: money(this.statistics.revenue),
+          icon: "coins",
         },
         {
           id: 4,
           color: "text-red-500",
           bgColor: "bg-red-100",
           label: "Prejuízos",
-          number: `${this.statistics.overdue.loss} MZN`,
-          icon: "fa-sack-dollar",
+          number: money(this.statistics.overdue.loss),
+          icon: "fa-arrow-trend-down",
         },
       ];
     },
   },
   methods: {
+    badge,
     ...mapActions([DASHBOARD_STATISTICS, FETCH_RESERVATIONS]),
     formatTime(datetime) {
       const { time } = javaDateTimeFormatter(datetime);
