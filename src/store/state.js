@@ -68,7 +68,6 @@ export const state = {
       loss: 0.0,
     },
   },
-
   tenant: {
     id: "",
     name: "",
@@ -76,7 +75,11 @@ export const state = {
     email: "",
     phoneNumber: "",
     adminUsername: "",
+    adminLastname: "",
     adminTelephone: "",
+    adminFirstname: "",
+    ttlockUsername: "",
+    ttlockPassword: "",
   },
 
   systemConfig: {

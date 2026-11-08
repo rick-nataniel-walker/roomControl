@@ -9,6 +9,7 @@ import ReservationsActionView from "@/views/reservations/ReservationsActionView.
 import ReservationsPaymentConfrimationView from "@/views/reservations/ReservationsPaymentConfrimationView.vue";
 import ConfigsView from "@/views/ConfigsView.vue";
 import ReportsView from "@/views/ReportsView.vue";
+import TenantSignup from "@/views/TenantSignup.vue";
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     path: "/",
     name: "login",
     component: LoginView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: TenantSignup,
     meta: { requiresAuth: false },
   },
   {

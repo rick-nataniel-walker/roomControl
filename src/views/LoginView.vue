@@ -59,7 +59,7 @@
 
           <p class="register-copy">
             Não tem conta?
-            <a href="#register">Registe-se</a>
+            <router-link :to="{ name: 'signup' }">Registe-se</router-link>
           </p>
         </form>
       </section>

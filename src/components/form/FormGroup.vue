@@ -72,7 +72,6 @@ export default {
     autocomplete: {
       type: String,
       default: "off",
-      validator: (value) => ["on", "off"].includes(value),
     },
     icon: {
       type: [String, Array, Object],
