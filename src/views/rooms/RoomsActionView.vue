@@ -56,8 +56,8 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     await store.dispatch(FETCH_SYS_CONFIG, {
-      group: 1,
-      subgroup: 1,
+      group: 4,
+      subgroup: 3,
     });
     next();
   },
@@ -94,7 +94,7 @@ export default {
               :key="durationUnit.lookupKey"
               :value="durationUnit.lookupKey"
             >
-              {{ durationUnit.lookupValue }}
+              {{ durationUnit.valueDescription }}
             </option>
           </FormGroup>
         </div>

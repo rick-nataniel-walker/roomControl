@@ -1,6 +1,7 @@
 import {
   CHECKOUT_RESERVATION,
   CONFIRM_RESERVATION,
+  CREATE_TENANT,
   DESECUPY_ROOM,
   FETCH_RESERVATIONS_BY_ROOM_NAME,
   FETCH_RESERVATIONS,
@@ -34,7 +35,7 @@ import {
   saveReservation,
 } from "@/api/reservations";
 import { dashboardStatistics } from "@/api/statistics";
-import { updateRefreshToken } from "@/api/tenants";
+import { createTenant, updateRefreshToken } from "@/api/tenants";
 import { globalConfigs } from "@/api/systemConfigs";
 
 export const actions = {
@@ -294,6 +295,21 @@ export const actions = {
         showAlert({
           type: "error",
           title: "Erro ao buscar estatistícas",
+          message: error.response.data.message,
+        });
+      });
+  },
+
+  [CREATE_TENANT](context, tenant) {
+    return createTenant(tenant)
+      .then((response) => {
+        let payload = response.data;
+        context.commit(FETCH_TENANT, payload);
+      })
+      .catch((error) => {
+        showAlert({
+          type: "error",
+          title: "Não foi possível criar a conta.!",
           message: error.response.data.message,
         });
       });

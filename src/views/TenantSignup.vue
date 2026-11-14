@@ -112,7 +112,7 @@
                 @icon-click="togglePasswordVisibility"
               />
             </div>
-            <div class="controls flex justify-between gap-4">
+            <div class="controls flex justify-between gap-4 right-0">
               <ActionBtn
                 v-if="currentStep > 1"
                 variant="cancel"
@@ -151,8 +151,8 @@
 import FormGroup from "@/components/form/FormGroup.vue";
 import ActionBtn from "@/components/shared/ActionBtn.vue";
 import navyLogo from "@/assets/navy-logo.png";
-import { mapState } from "vuex";
-import { createTenant } from "@/api/tenants";
+import { mapActions, mapState } from "vuex";
+import { CREATE_TENANT } from "@/store/constants";
 
 export default {
   name: "TenantSignup",
@@ -173,6 +173,7 @@ export default {
     ...mapState(["tenant"]),
   },
   methods: {
+    ...mapActions([CREATE_TENANT]),
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
@@ -208,18 +209,12 @@ export default {
       if (!this.validateCurrentStep() || this.isSubmitting) return;
 
       this.isSubmitting = true;
+      // eslint-disable-next-line no-unused-vars
       const { id, ...tenant } = this.tenant;
+
       try {
-        await createTenant(tenant);
+        await this.CREATE_TENANT(tenant);
         this.$router.replace({ name: "login" });
-      } catch (error) {
-        const message =
-          error.response?.data?.message || "Não foi possível criar a conta.";
-        this.$alert?.({
-          type: "error",
-          title: "Erro ao criar conta",
-          message,
-        });
       } finally {
         this.isSubmitting = false;
       }
@@ -300,6 +295,10 @@ export default {
 
 .controls {
   @apply mt-5;
+}
+
+.step h3 {
+  @apply mb-5 text-sm text-slate-500 font-bold;
 }
 
 @media (min-width: 768px) {

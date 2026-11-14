@@ -60,7 +60,7 @@
                   Number(selectedRoom?.pricingUnit)
                 "
               >
-                {{ durationUnit.lookupValue }}
+                {{ durationUnit.valueDescription }}
               </option>
             </FormGroup>
           </div>
@@ -143,7 +143,7 @@ export default {
           this.systemConfig.durationUnits,
           this.reservation.durationUnit,
           "lookupKey"
-        )?.lookupValue ?? ""
+        )?.valueDescription ?? ""
       );
     },
   },
@@ -247,8 +247,8 @@ export default {
         itemsPerPage: 5,
       });
       await store.dispatch(FETCH_SYS_CONFIG, {
-        group: 1,
-        subgroup: 1,
+        group: 4,
+        subgroup: 3,
       });
       next();
     } catch (error) {
